@@ -3,47 +3,163 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily News Brief</title>
+<title>The Daily Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+  * { box-sizing: border-box; }
   body {
-    font-family: Georgia, 'Times New Roman', serif;
-    max-width: 720px;
-    margin: 40px auto;
-    padding: 0 20px;
-    line-height: 1.6;
-    color: #222;
-    background: #fafafa;
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: #f7f4ed;
+    color: #1a1a1a;
   }
-  h1 {
-    font-size: 1.8em;
-    border-bottom: 2px solid #333;
-    padding-bottom: 10px;
+  .wrap { max-width: 680px; margin: 0 auto; padding: 48px 24px 80px; }
+  header.masthead { text-align: center; margin-bottom: 8px; }
+  .masthead h1 {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 42px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin: 0 0 6px;
   }
-  .updated {
-    color: #777;
-    font-size: 0.9em;
-    margin-bottom: 30px;
+  .masthead .rule { border: none; border-top: 3px double #9a3324; margin: 14px 0 10px; }
+  .masthead .meta { font-size: 13px; color: #7a7468; letter-spacing: 0.3px; }
+  nav.toc { display: flex; justify-content: center; flex-wrap: wrap; gap: 18px; margin: 22px 0 0; font-size: 12.5px; }
+  nav.toc a {
+    color: #9a3324; text-decoration: none; font-weight: 600;
+    letter-spacing: 0.4px; text-transform: uppercase;
   }
-  p {
-    margin: 0 0 16px;
+  nav.toc a:hover { text-decoration: underline; }
+  section { margin-top: 46px; }
+  section h2 {
+    font-family: 'Newsreader', serif;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #9a3324;
+    border-bottom: 1px solid #ddd6c7;
+    padding-bottom: 8px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
   }
+  section h2 .count {
+    color: #a39c8c; font-weight: 400; letter-spacing: 0;
+    text-transform: none; font-size: 11.5px; margin-left: auto;
+  }
+  .story { padding: 22px 0; border-bottom: 1px solid #e7e1d3; }
+  .story:last-child { border-bottom: none; }
+  .story .headline, .story .headline-plain {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 21px; line-height: 1.3; font-weight: 600;
+    color: #1a1a1a; text-decoration: none; display: inline-block; margin-bottom: 8px;
+  }
+  .story a.headline:hover { color: #9a3324; }
+  .story a.headline::after { content: " \2197"; font-size: 14px; color: #9a3324; }
+  .story p { font-size: 15.5px; line-height: 1.65; color: #3c382f; margin: 0; }
+  .event { padding: 18px 0; border-bottom: 1px solid #e7e1d3; }
+  .event:last-child { border-bottom: none; }
+  .event h3 { font-family: 'Newsreader', serif; font-size: 18px; margin: 0 0 6px; }
+  .event p { font-size: 14.5px; color: #3c382f; margin: 0 0 8px; }
+  .event a.more { font-size: 13px; color: #9a3324; font-weight: 600; text-decoration: none; }
+  .event a.more:hover { text-decoration: underline; }
+  .empty { font-style: italic; color: #998f7c; font-size: 14px; padding: 14px 0; }
+  footer { margin-top: 60px; text-align: center; font-size: 12px; color: #a39c8c; }
 </style>
 </head>
 <body>
-<h1>Daily News Brief</h1>
-<div class="updated">Last updated: Saturday, 20 June 2026</div>
-<p>Hi there, Here's your Tech Brief:</p>
-<p>WORLD("Hindustantimes") NEWS<br>========================<br>WHITE HOUSE CLEARS NEW VISA RULE IMPACTING FOREIGN STUDENTS. The United States may soon implement revised immigration rules that complicate the ability of international students to remain in the country for the duration of their academic programs. This policy shift is expected to significantly impact Indian students who make up a large portion of the international student body. The rule change has been cleared by the White House, signaling a potential tightening of student visa regulations.<br>Link: &lt;https://www.hindustantimes.com/world-news/us-news/white-house-clears-new-visa-rule-impacting-foreign-students-heres-how-indians-will-be-impacted-101781955164258.html&gt;</p>
-<p>PAKISTAN DOES NOT HAVE PRESS FREEDOM: VANCE REVEALS DELAY IN US-IRAN DEAL. Vice President JD Vance stated that a lack of press freedom in Pakistan contributed to the delay in releasing the full text of the US-Iran deal. Both Pakistan and Qatar served as mediators in the agreement between the two nations. Prime Minister Shehbaz Sharif was notably the first world leader to announce the finalized peace deal to the public.<br>Link: &lt;https://www.hindustantimes.com/world-news/pakistan-does-not-have-press-freedom-jd-vance-reveals-what-caused-delay-in-releasing-full-text-of-us-iran-deal-101781945800176.html&gt;</p>
-<p>UK AND UAE ANNOUNCE SOCIAL MEDIA BANS FOR CHILDREN. The United Kingdom and the United Arab Emirates are the latest nations to announce plans to ban social media use for children. These measures include the implementation of facial-age checks and strategies to prevent kids from using VPN workarounds. Governments are closely studying the ongoing experience in Australia to determine the effectiveness of such digital restrictions for minors.<br>Link: &lt;https://www.hindustantimes.com/world-news/uk-uae-latest-to-announce-social-media-bans-for-children-inside-australia-experience-101781943365167.html&gt;</p>
-<p>INDIAN("Hindustantimes") NEWS<br>========================<br>SHIV SENA'S 60-YEAR POLITICAL JOURNEY MARKED BY NEW SPLIT. As the Shiv Sena marks its 60th anniversary, the party faces fresh turmoil as six MPs from the Uddhav Thackeray camp are reportedly seeking a formal split. The party has a long history of internal rebellions, beginning with Bal Thackeray's rise and continuing through Uddhav's leadership. This latest development adds another chapter to the ongoing struggle for control over the party's legacy and symbol.<br>Link: &lt;https://www.hindustantimes.com/india-news/a-look-back-at-shiv-senas-60-year-political-journey-bal-thackerays-rise-uddhav-takes-over-and-then-a-split-101781948911340.html&gt;</p>
-<p>CJP CHIEF ABHIJEET DIPKE CLAIMS POLICE REFUSING PROTEST EXTENSION. Cockroach Janta Party (CJP) chief Abhijeet Dipke alleged that Delhi Police are refusing to take calls regarding the extension of their protest at Jantar Mantar. The group is protesting against alleged examination irregularities and paper leaks, demanding the resignation of Education Minister Dharmendra Pradhan. Dipke maintained that the protesters would not vacate the site until their demands for accountability are addressed.<br>Link: &lt;https://www.hindustantimes.com/india-news/cjp-chief-abhijeet-dipke-says-cops-not-taking-calls-on-protest-extension-dharmendra-pradhan-resign-101781955968802.html&gt;</p>
-<p>PM MODI TO LEAD INTERNATIONAL YOGA DAY IN KOLKATA. Prime Minister Narendra Modi is set to lead the International Yoga Day celebrations in Kolkata on June 21 despite a forecast of rain. The event is themed “Yoga for Healthy Ageing” and is scheduled to begin at 6:30 am for a duration of 80 minutes. The Prime Minister arrived in Kolkata on Saturday for a two-day visit to spearhead the global celebration.<br>Link: &lt;https://www.hindustantimes.com/india-news/pm-modi-to-lead-international-yoga-day-celebrations-in-kolkata-amid-rain-forecast-101781955857642.html&gt;</p>
-<p>INDIAN-TIMES NEWS<br>========================<br>TRUMP CLAIMS MELONI BEGGED FOR A PHOTO AT G7 SUMMIT. Donald Trump has repeated claims that Italian Prime Minister Giorgia Meloni "begged" for a photograph with him during the G7 Summit to improve her approval numbers. Trump stated he declined the request, leading to a public spat that resulted in an Italian minister canceling a scheduled trip to the United States. Meloni’s administration has fired back, suggesting that Trump’s remarks are offensive to the entire nation of Italy.<br>Link: &lt;https://www.indiatoday.in/world/story/meloni-asked-me-for-picture-over-and-over-at-g7-to-get-her-numbers-up-i-said-no-thanks-trump-repeats-claim-2930567-2026-06-20&gt;</p>
-<p>CHAOS IN DHAKA AS HINDUS PROTEST IMAGE DESECRATION. Thousands of Hindus held a massive protest march in Dhaka following the desecration of an image of Lord Ram by extremists. The demonstrators raised religious chants and called for immediate government action to protect the minority community from harassment. The situation in the Bangladesh capital remains tense as the protest highlights growing concerns over religious intolerance in the region.<br>Link: &lt;https://www.indiatoday.in/world/story/bangladesh-hindus-protest-dhaka-lord-ram-image-desecration-islamists-2930350-2026-06-20&gt;</p>
-<p>PRASIDH KRISHNA STAKES CLAIM FOR 2027 WORLD CUP. Fast bowler Prasidh Krishna received a massive reception at Chepauk as he showcased a dominant bowling performance against Afghanistan. His efforts have positioned him as a strong contender for India's 2027 World Cup squad as the team looks to build its future pace attack. The roar from the Chennai crowd emphasized the impact he is making as he returns to peak form.<br>Link: &lt;https://www.indiatoday.in/sports/cricket/story/india-vs-afghanistan-prasidh-krishna-bowling-2930602-2026-06-20&gt;</p>
-<p>UPCOMING  EVENTS IN INDIA<br>========================<br>SCREENING OF INDIA VS AFGHANISTAN 3RD ODI<br>Date: June 20, 2024; Location: The Terrace Sky Bar &amp; Lounge, Ghaziabad.<br>Description: A live screening of the 3rd ODI match between India and Afghanistan on giant screens. The event promises an immersive experience for cricket fans at a popular rooftop venue.<br>Link: &lt;https://www.district.in/events/india-vs-afghanistan-3rd-odi-apr20-2026-buy-tickets&gt;</p>
-<p>AB HAI AAPKI BARI BY INDER SAHANI<br>Date: June 21, 2024; Location: The Laugh Store: DLF Cyberhub, Gurugram.<br>Description: Stand-up comedian Inder Sahani performs his latest comedy special "Ab Hai Aapki Bari." The show offers a night of relatable humor and storytelling in the heart of Cyber City.<br>Link: &lt;https://www.stubhub.com/za/inder-sahani-gurugram-tickets-6-21-2026/event/161053864/&gt;</p>
-<p>ZENFEST 3RD EDITION - A WELLNESS AND MUSIC FESTIVAL<br>Date: June 20, 2024; Location: Aina Event Spaces, Hyderabad.<br>Description: A two-day immersive wellness festival featuring yoga sessions, mindful movement, and sound healing journeys. The event combines wellness practices with music in a nature-focused setting.<br>Link: &lt;https://highape.com/hyderabad/events/zenfest-3-0-a-wellness-festival-flv1gxebcq&gt;</p>
+<div class="wrap">
+  <header class="masthead">
+    <h1>The Daily Brief</h1>
+    <hr class="rule">
+    <div class="meta">Your AI-curated news digest &middot; Saturday, 20 June 2026</div>
+    <nav class="toc"><a href="#world-news">World News</a>
+<a href="#indian-news">Indian News</a>
+<a href="#indian-times-news">Indian-Times News</a>
+<a href="#upcoming-events-in-india">Upcoming Events in India</a></nav>
+  </header>
+  
+        <section id="world-news">
+          <h2>World News <span class="count">3 stories</span></h2>
+          
+          <div class="story">
+            <div class="headline-plain">WHITE HOUSE CLEARS NEW VISA RULE IMPACTING FOREIGN STUDENTS. The United States may soon implement revised immigration rules that complicate the ability of international students to remain in the country for the duration of their academic programs. This policy shift is expected to significantly impact Indian students who make up a large portion of the international student body. The rule change has been cleared by the White House, signaling a potential tightening of student visa regulations.</div>
+            
+          </div>
+
+          <div class="story">
+            <div class="headline-plain">PAKISTAN DOES NOT HAVE PRESS FREEDOM: VANCE REVEALS DELAY IN US-IRAN DEAL. Vice President JD Vance stated that a lack of press freedom in Pakistan contributed to the delay in releasing the full text of the US-Iran deal. Both Pakistan and Qatar served as mediators in the agreement between the two nations. Prime Minister Shehbaz Sharif was notably the first world leader to announce the finalized peace deal to the public.</div>
+            
+          </div>
+
+          <div class="story">
+            <div class="headline-plain">UK AND UAE ANNOUNCE SOCIAL MEDIA BANS FOR CHILDREN. The United Kingdom and the United Arab Emirates are the latest nations to announce plans to ban social media use for children. These measures include the implementation of facial-age checks and strategies to prevent kids from using VPN workarounds. Governments are closely studying the ongoing experience in Australia to determine the effectiveness of such digital restrictions for minors.</div>
+            
+          </div>
+        </section>
+
+        <section id="indian-news">
+          <h2>Indian News <span class="count">3 stories</span></h2>
+          
+          <div class="story">
+            <div class="headline-plain">SHIV SENA'S 60-YEAR POLITICAL JOURNEY MARKED BY NEW SPLIT. As the Shiv Sena marks its 60th anniversary, the party faces fresh turmoil as six MPs from the Uddhav Thackeray camp are reportedly seeking a formal split. The party has a long history of internal rebellions, beginning with Bal Thackeray's rise and continuing through Uddhav's leadership. This latest development adds another chapter to the ongoing struggle for control over the party's legacy and symbol.</div>
+            
+          </div>
+
+          <div class="story">
+            <div class="headline-plain">CJP CHIEF ABHIJEET DIPKE CLAIMS POLICE REFUSING PROTEST EXTENSION. Cockroach Janta Party (CJP) chief Abhijeet Dipke alleged that Delhi Police are refusing to take calls regarding the extension of their protest at Jantar Mantar. The group is protesting against alleged examination irregularities and paper leaks, demanding the resignation of Education Minister Dharmendra Pradhan. Dipke maintained that the protesters would not vacate the site until their demands for accountability are addressed.</div>
+            
+          </div>
+
+          <div class="story">
+            <div class="headline-plain">PM MODI TO LEAD INTERNATIONAL YOGA DAY IN KOLKATA. Prime Minister Narendra Modi is set to lead the International Yoga Day celebrations in Kolkata on June 21 despite a forecast of rain. The event is themed “Yoga for Healthy Ageing” and is scheduled to begin at 6:30 am for a duration of 80 minutes. The Prime Minister arrived in Kolkata on Saturday for a two-day visit to spearhead the global celebration.</div>
+            
+          </div>
+        </section>
+
+        <section id="indian-times-news">
+          <h2>Indian-Times News <span class="count">3 stories</span></h2>
+          
+          <div class="story">
+            <div class="headline-plain">TRUMP CLAIMS MELONI BEGGED FOR A PHOTO AT G7 SUMMIT. Donald Trump has repeated claims that Italian Prime Minister Giorgia Meloni "begged" for a photograph with him during the G7 Summit to improve her approval numbers. Trump stated he declined the request, leading to a public spat that resulted in an Italian minister canceling a scheduled trip to the United States. Meloni’s administration has fired back, suggesting that Trump’s remarks are offensive to the entire nation of Italy.</div>
+            
+          </div>
+
+          <div class="story">
+            <div class="headline-plain">CHAOS IN DHAKA AS HINDUS PROTEST IMAGE DESECRATION. Thousands of Hindus held a massive protest march in Dhaka following the desecration of an image of Lord Ram by extremists. The demonstrators raised religious chants and called for immediate government action to protect the minority community from harassment. The situation in the Bangladesh capital remains tense as the protest highlights growing concerns over religious intolerance in the region.</div>
+            
+          </div>
+
+          <div class="story">
+            <div class="headline-plain">PRASIDH KRISHNA STAKES CLAIM FOR 2027 WORLD CUP. Fast bowler Prasidh Krishna received a massive reception at Chepauk as he showcased a dominant bowling performance against Afghanistan. His efforts have positioned him as a strong contender for India's 2027 World Cup squad as the team looks to build its future pace attack. The roar from the Chennai crowd emphasized the impact he is making as he returns to peak form.</div>
+            
+          </div>
+        </section>
+
+        <section id="upcoming-events-in-india">
+          <h2>Upcoming Events in India <span class="count">3 stories</span></h2>
+          
+            <div class="event">
+              <h3>SCREENING OF INDIA VS AFGHANISTAN 3RD ODI</h3>
+              <p>Date: June 20, 2024; Location: The Terrace Sky Bar &amp; Lounge, Ghaziabad. Description: A live screening of the 3rd ODI match between India and Afghanistan on giant screens. The event promises an immersive experience for cricket fans at a popular rooftop venue.</p>
+              
+            </div>
+
+            <div class="event">
+              <h3>AB HAI AAPKI BARI BY INDER SAHANI</h3>
+              <p>Date: June 21, 2024; Location: The Laugh Store: DLF Cyberhub, Gurugram. Description: Stand-up comedian Inder Sahani performs his latest comedy special "Ab Hai Aapki Bari." The show offers a night of relatable humor and storytelling in the heart of Cyber City.</p>
+              
+            </div>
+
+            <div class="event">
+              <h3>ZENFEST 3RD EDITION - A WELLNESS AND MUSIC FESTIVAL</h3>
+              <p>Date: June 20, 2024; Location: Aina Event Spaces, Hyderabad. Description: A two-day immersive wellness festival featuring yoga sessions, mindful movement, and sound healing journeys. The event combines wellness practices with music in a nature-focused setting.</p>
+              
+            </div>
+        </section>
+  <footer>Generated automatically from RSS feeds &middot; Last updated Saturday, 20 June 2026</footer>
+</div>
 </body>
 </html>
