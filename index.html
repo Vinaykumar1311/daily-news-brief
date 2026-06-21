@@ -3,239 +3,350 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Daily Brief</title>
+<title>The Daily Dispatch</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background: #f7f4ed;
-    color: #1a1a1a;
+  :root{
+    --paper:#FAF7F0;
+    --paper-raised:#FFFFFF;
+    --ink:#1B1812;
+    --ink-soft:#5B5446;
+    --rule:#DEd6C2;
+    --rule-strong:#1B1812;
+    --shadow: 0 10px 30px -18px rgba(27,24,18,0.35);
   }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 48px 24px 80px; }
-  header.masthead { text-align: center; margin-bottom: 8px; }
-  .masthead h1 {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 44px;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    margin: 0 0 6px;
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Source Serif 4', Georgia, serif;
+    -webkit-font-smoothing:antialiased;
   }
-  .masthead .rule { border: none; border-top: 3px double #9a3324; margin: 14px 0 10px; }
-  .masthead .meta { font-size: 13px; color: #7a7468; letter-spacing: 0.3px; }
+  a{ color:inherit; }
+  .wrap{ max-width:980px; margin:0 auto; padding:0 22px 90px; }
 
-  nav.maincats { display: flex; justify-content: center; gap: 10px; margin: 26px 0 0; }
-  .cat-btn {
-    font-family: 'Inter', sans-serif;
-    font-size: 13px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase;
-    padding: 10px 22px; border-radius: 999px; border: 2px solid #9a3324;
-    background: transparent; color: #9a3324; cursor: pointer; transition: all 0.15s ease;
+  /* ---------- Masthead ---------- */
+  header.masthead{
+    position:relative;
+    text-align:center;
+    padding:46px 0 22px;
+    border-bottom:4px double var(--rule-strong);
   }
-  .cat-btn:hover { background: #f1e4dc; }
-  .cat-btn.active { background: #9a3324; color: #fff; }
+  .stamp{
+    position:absolute; top:28px; right:0;
+    width:74px; height:74px; border-radius:50%;
+    border:2px solid var(--ink); color:var(--ink);
+    display:flex; align-items:center; justify-content:center; flex-direction:column;
+    transform:rotate(8deg);
+    font-family:'Inter',sans-serif; letter-spacing:0.05em;
+    opacity:0.78;
+  }
+  .stamp .d{ font-size:18px; font-weight:700; line-height:1; }
+  .stamp .e{ font-size:8px; font-weight:600; text-transform:uppercase; margin-top:3px; }
+  .eyebrow{
+    font-family:'Inter',sans-serif; font-size:11.5px; font-weight:600;
+    letter-spacing:0.22em; text-transform:uppercase; color:var(--ink-soft);
+    margin:0 0 10px;
+  }
+  .masthead h1{
+    font-family:'Fraunces', Georgia, serif;
+    font-weight:900;
+    font-optical-sizing:auto;
+    font-size:clamp(40px, 7vw, 64px);
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  .masthead .meta{
+    margin-top:14px;
+    font-family:'Inter',sans-serif; font-size:13px; color:var(--ink-soft);
+    letter-spacing:0.02em;
+  }
 
-  nav.outlet-toc { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; margin: 28px 0 0; font-size: 12px; }
-  nav.outlet-toc a {
-    color: #9a3324; text-decoration: none; font-weight: 600;
-    letter-spacing: 0.3px; text-transform: uppercase;
+  /* ---------- Edition tabs ---------- */
+  nav.maincats{ display:flex; justify-content:center; gap:8px; margin:24px 0 0; flex-wrap:wrap; }
+  .cat-btn{
+    font-family:'Inter',sans-serif; font-size:12.5px; font-weight:700;
+    letter-spacing:0.08em; text-transform:uppercase;
+    padding:9px 20px; border-radius:2px; border:1.5px solid var(--ink);
+    background:transparent; color:var(--ink); cursor:pointer;
+    transition:background .15s ease, color .15s ease, border-color .15s ease;
   }
-  nav.outlet-toc a:hover { text-decoration: underline; }
+  .cat-btn.active{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .cat-btn:hover:not(.active){ background:var(--rule); }
 
-  .outlet-section { margin-top: 44px; }
-  .outlet-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #9a3324;
-    border-bottom: 1px solid #ddd6c7;
-    padding-bottom: 8px;
-    margin-bottom: 4px;
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
+  /* ---------- Lead story ---------- */
+  .lead-story{
+    display:block; text-decoration:none; color:inherit;
+    margin:38px 0 8px; border-bottom:1px solid var(--rule); padding-bottom:32px;
+    cursor:pointer;
   }
-  .outlet-title .count {
-    color: #a39c8c; font-weight: 400; letter-spacing: 0;
-    text-transform: none; font-size: 11.5px; margin-left: auto;
+  .lead-story.no-link{ cursor:default; }
+  .lead-media{
+    width:100%; aspect-ratio:16/8; overflow:hidden; border-radius:3px;
+    background:var(--rule); margin-bottom:20px;
   }
+  .lead-media img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s ease; }
+  .lead-story:hover .lead-media img{ transform:scale(1.035); }
+  .kicker{
+    display:block; font-family:'Inter',sans-serif; font-size:11.5px; font-weight:700;
+    letter-spacing:0.16em; text-transform:uppercase; margin-bottom:10px;
+  }
+  .lead-headline{
+    font-family:'Fraunces', Georgia, serif; font-weight:800; font-optical-sizing:auto;
+    font-size:clamp(26px, 4vw, 38px); line-height:1.12; margin:0 0 14px;
+  }
+  .lead-story:hover .lead-headline{ text-decoration:underline; text-underline-offset:5px; }
+  .lead-dek{
+    font-size:18px; line-height:1.6; color:var(--ink-soft); margin:0 0 14px; max-width:74ch;
+  }
+  .read-link{ font-family:'Inter',sans-serif; font-size:12.5px; font-weight:700; letter-spacing:0.03em; }
 
-  .story-grid { display: flex; flex-direction: column; }
-  .story { padding: 22px 0; border-bottom: 1px solid #e7e1d3; }
-  .story:last-child { border-bottom: none; }
-  .story-img {
-    width: 100%; max-height: 240px; object-fit: cover;
-    border-radius: 8px; margin-bottom: 14px; display: block;
-    background: #e7e1d3;
+  /* ---------- Outlet sections ---------- */
+  nav.outlet-toc{ display:flex; justify-content:center; flex-wrap:wrap; gap:18px; margin:30px 0 0; font-size:12px; }
+  nav.outlet-toc a{
+    font-family:'Inter',sans-serif; text-decoration:none; font-weight:600;
+    letter-spacing:0.05em; text-transform:uppercase; color:var(--ink-soft);
   }
-  .story .headline, .story .headline-plain {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 22px; line-height: 1.3; font-weight: 800;
-    color: #1a1a1a; text-decoration: none; display: inline-block; margin-bottom: 8px;
-  }
-  .story a.headline:hover { color: #9a3324; }
-  .story a.headline::after { content: " \2197"; font-size: 14px; color: #9a3324; }
-  .story p { font-size: 15.5px; line-height: 1.65; color: #3c382f; margin: 0; }
+  nav.outlet-toc a:hover{ color:var(--ink); }
 
-  .events-section { margin-top: 56px; border-top: 3px double #9a3324; padding-top: 30px; }
-  .events-section h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
-    color: #9a3324; margin-bottom: 18px;
+  .outlet-section{ margin-top:46px; }
+  .outlet-title{
+    font-family:'Inter',sans-serif; font-size:12px; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.14em;
+    border-bottom:1px solid var(--rule); padding-bottom:10px; margin-bottom:6px;
+    display:flex; align-items:baseline; gap:10px;
   }
-  .event { display: flex; gap: 16px; padding: 18px 0; border-bottom: 1px solid #e7e1d3; }
-  .event:last-child { border-bottom: none; }
-  .event-img { width: 110px; height: 90px; object-fit: cover; border-radius: 6px; flex-shrink: 0; background: #e7e1d3; }
-  .event-body { flex: 1; }
-  .event h3 { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 18px; margin: 0 0 6px; }
-  .event p { font-size: 14.5px; color: #3c382f; margin: 0 0 8px; }
-  .event a.more { font-size: 13px; color: #9a3324; font-weight: 700; text-decoration: none; }
-  .event a.more:hover { text-decoration: underline; }
+  .outlet-title .count{ color:var(--ink-soft); font-weight:400; letter-spacing:0; text-transform:none; font-size:11.5px; margin-left:auto; }
 
-  .empty { font-style: italic; color: #998f7c; font-size: 14px; padding: 14px 0; }
-  footer { margin-top: 60px; text-align: center; font-size: 12px; color: #a39c8c; }
+  .story-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0 32px; }
+  .story{
+    display:block; text-decoration:none; color:inherit;
+    padding:22px 0; border-bottom:1px solid var(--rule); cursor:pointer;
+  }
+  .story.no-link{ cursor:default; }
+  .story-media{ width:100%; aspect-ratio:16/9.5; overflow:hidden; border-radius:3px; background:var(--rule); margin-bottom:13px; }
+  .story-media img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s ease; }
+  .story:hover .story-media img{ transform:scale(1.04); }
+  .story-headline{
+    font-family:'Fraunces', Georgia, serif; font-weight:700; font-optical-sizing:auto;
+    font-size:21px; line-height:1.28; margin:0 0 8px;
+  }
+  .story:hover .story-headline{ text-decoration:underline; text-underline-offset:4px; }
+  .story-dek{ font-size:14.5px; line-height:1.62; color:var(--ink-soft); margin:0 0 10px; }
+
+  /* ---------- Events ---------- */
+  .events-section{ margin-top:60px; border-top:4px double var(--rule-strong); padding-top:30px; }
+  .section-head h2{
+    font-family:'Inter',sans-serif; font-size:12.5px; font-weight:700; text-transform:uppercase;
+    letter-spacing:0.18em; margin:0 0 20px; color:var(--ink-soft);
+  }
+  .event-list{ display:flex; flex-direction:column; }
+  .event{ display:flex; gap:18px; padding:18px 0; border-bottom:1px solid var(--rule); }
+  .event:last-child{ border-bottom:none; }
+  .event-media{ width:120px; height:96px; flex-shrink:0; border-radius:3px; overflow:hidden; background:var(--rule); }
+  .event-media img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .event-body{ flex:1; }
+  .event h3{ font-family:'Fraunces', serif; font-weight:700; font-size:18px; margin:0 0 6px; }
+  .event p{ font-size:14.5px; color:var(--ink-soft); margin:0 0 8px; line-height:1.55; }
+  .event a.more{ font-family:'Inter',sans-serif; font-size:12.5px; color:var(--ink); font-weight:700; text-decoration:none; }
+  .event a.more:hover{ text-decoration:underline; }
+
+  .empty{ font-style:italic; color:var(--ink-soft); font-size:14px; padding:14px 0; }
+  footer{ margin-top:64px; text-align:center; font-family:'Inter',sans-serif; font-size:11.5px; color:var(--ink-soft); letter-spacing:0.03em; }
+
+  @media (max-width:680px){
+    .story-grid{ grid-template-columns:1fr; }
+    .stamp{ width:58px; height:58px; top:14px; }
+    .stamp .d{ font-size:14px; }
+    header.masthead{ padding-top:34px; }
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="masthead">
-    <h1>The Daily Brief</h1>
-    <hr class="rule">
-    <div class="meta">Your AI-curated news digest &middot; Sunday, 21 June 2026</div>
-    <nav class="maincats"><button class="cat-btn active" data-cat="indian-news" type="button">Indian News</button>
-<button class="cat-btn" data-cat="world-news" type="button">World News</button>
+    <div class="stamp"><span class="d">21 JUN</span><span class="e">Edition</span></div>
+    <p class="eyebrow">AI-curated &middot; Updated daily at 6 AM</p>
+    <h1>The Daily Dispatch</h1>
+    <div class="meta">Sunday, 21 June 2026</div>
+    <nav class="maincats"><button class="cat-btn active" data-cat="indian-news" data-accent="#C2570A" type="button">Indian News</button>
+<button class="cat-btn" data-cat="world-news" data-accent="#1F4B5F" type="button">World News</button>
 </nav>
   </header>
   
         <div class="catpanel" id="indian-news" style="display:block">
+          <a class="lead-story" href="https://www.hindustantimes.com/india-news/neet-ug-re-exam-held-amid-tight-security-lakhs-retake-test-after-paper-leak-row-101782052097514" target="_blank" rel="noopener">
+      
+      <div class="lead-body">
+        <span class="kicker" style="color:#C2570A">Top Story</span>
+        <h2 class="lead-headline">NEET-UG RE-EXAM CONCLUDES WITH TIGHT SECURITY AND HIGH TENSION</h2>
+        <p class="lead-dek">The NEET-UG medical entrance re-examination was successfully conducted across 5,440 centres in India and abroad under exceptionally tight security. Over 22 lakh aspirants retook the test, which was heavily monitored by over 1.38 lakh CCTV cameras and 51,000 jammers to prevent any malpractices. Students reported that the physics section was the toughest, while biology was relatively easier compared to the first attempt. Amidst the high pressure, tragedy struck as a 19-year-old aspirant in Haryana died by suicide just hours before the exam. Additionally, controversies emerged after a burqa-clad student was allegedly denied entry at a centre, prompting responses from both the police and the National Testing Agency.</p>
+        <span class="read-link" style="color:#C2570A">Read full story &#8594;</span>
+      </div></a>
           <nav class="outlet-toc"><a href="#indian-news--hindustan-times">Hindustan Times</a>
+<a href="#indian-news--india-today">India Today</a>
+<a href="#indian-news--aaj-tak">Aaj Tak</a>
 </nav>
           
-              <section id="indian-news--hindustan-times" class="outlet-section">
-                <h3 class="outlet-title">Hindustan Times <span class="count">7 stories</span></h3>
-                <div class="story-grid">
-    <article class="story">
+          <section id="indian-news--hindustan-times" class="outlet-section">
+            <h3 class="outlet-title" style="color:#C2570A">Hindustan Times
+              <span class="count">2 stories</span>
+            </h3>
+            <div class="story-grid"><a class="story" href="https://www.hindustantimes.com/india-news/omraje-nimbalkar-joins-shinde-sena-follows-nagesh-ashtikar-in-ubt-exodus-shiv-sena-rebellion-maharashtra-eknath-shinde-101782054735332" target="_blank" rel="noopener">
       
       <div class="story-body">
-        <a class="headline" href="https://www.hindustantimes.com/india-news/19-year-old-neet-hisar-aspirant-dies-by-suicide-hours-before-re-test-third-attempt-total-deaths-nta-govt-police-haryana-101782049894783.html" target="_blank" rel="noopener">19-YEAR-OLD NEET ASPIRANT DIES BY SUICIDE IN HISAR</a>
-        <p>A 19-year-old NEET aspirant from Hisar, Haryana, allegedly died by suicide hours before she was scheduled to take the medical entrance re-test. According to her family members, she consumed pesticide at her home on Sunday morning. This was to be her third attempt at the examination, and her death marks the 14th suicide associated with the medical exam in India.</p>
-      </div>
-    </article>
-
-    <article class="story">
+        <h3 class="story-headline">SHIV SENA UBT REBELLION ESCALATES AS MPS DEFECT TO SHINDE CAMP</h3>
+        <p class="story-dek">The Uddhav Thackeray-led Shiv Sena (UBT) faction is facing another massive political crisis as multiple MPs have decided to cross over to Eknath Shinde’s faction. MP Omprakash Raje Nimbalkar and Hingoli MP Nagesh Patil Ashtikar both confirmed their exit from the UBT camp to join the ruling Shiv Sena. The defecting leaders cited a severe lack of development funds in their constituencies and hurtful remarks from UBT leadership as the main reasons for their decision. Maharashtra Chief Minister Devendra Fadnavis lauded the move, declaring that "Operation Tiger" has been a resounding success. This fresh wave of rebellions marks yet another major split in the party's turbulent 60-year political history.</p>
+        <span class="read-link" style="color:#C2570A">Read full story &#8594;</span>
+      </div></a>
+<a class="story" href="https://www.hindustantimes.com/india-news/death-people-hospitalised-alleged-ammonia-gas-leak-in-a-shrimp-processing-facility-near-chennai-tamil-nadu-101782038678087" target="_blank" rel="noopener">
       
       <div class="story-body">
-        <a class="headline" href="https://www.hindustantimes.com/india-news/not-getting-development-funds-what-sena-ubt-mp-nagesh-patil-ashtikar-said-on-crossover-to-eknath-shinde-camp-101782046110009.html" target="_blank" rel="noopener">SHIV SENA UBT MP NAGESH PATIL CROSSES OVER TO SHINDE CAMP</a>
-        <p>Shiv Sena (UBT) MP Nagesh Patil Ashtikar has confirmed his crossover to Eknath Shinde's Shiv Sena faction. In a video posted on his Instagram, Patil stated that he had not compromised on his ideology and had simply transitioned from one Shiv Sena to another. He explained that his decision was driven by not receiving development funds and being hurt by recent remarks.</p>
-      </div>
-    </article>
-
-    <article class="story">
+        <h3 class="story-headline">TAMIL NADU AMMONIA GAS LEAK KILLS SEVEN AND HOSPITALISES SEVERAL</h3>
+        <p class="story-dek">A suspected ammonia gas leak at a shrimp processing facility in Tamil Nadu's Tiruvallur district has resulted in the tragic deaths of seven people. The leak occurred on Sunday at the St Peter's Paul Seafoods Exports facility located in Kannigaipair, near Periyapalayam. Several other workers who inhaled the toxic gas fell ill and had to be rushed to nearby hospitals for urgent medical care. Emergency response teams and local authorities arrived at the scene shortly after the incident to contain the leak and secure the facility. An investigation has been launched to determine the exact cause of the failure and to check for safety protocol violations at the plant.</p>
+        <span class="read-link" style="color:#C2570A">Read full story &#8594;</span>
+      </div></a></div>
+          </section>
+          <section id="indian-news--india-today" class="outlet-section">
+            <h3 class="outlet-title" style="color:#C2570A">India Today
+              <span class="count">3 stories</span>
+            </h3>
+            <div class="story-grid"><a class="story" href="https://www.indiatoday.in/science/story/thoothukudi-tornado-tamil-nadu-rare-india-weather-formation-explained-2931171-2026-06-21?utm_source=rss" target="_blank" rel="noopener">
       
       <div class="story-body">
-        <a class="headline" href="https://www.hindustantimes.com/india-news/death-people-hospitalised-alleged-ammonia-gas-leak-in-a-shrimp-processing-facility-near-chennai-tamil-nadu-101782038678087.html" target="_blank" rel="noopener">SEVEN KILLED IN TIRUVALLUR AMMONIA GAS LEAK</a>
-        <p>A suspected ammonia gas leak at a shrimp processing facility in Tamil Nadu's Tiruvallur has left seven people dead and several others hospitalized. The incident occurred on Sunday at the St Peter's Paul Seafoods Exports facility in Kannigaipair near Periyapalayam. Emergency medical teams have responded, and the survivors are receiving treatment.</p>
-      </div>
-    </article>
-
-    <article class="story">
+        <h3 class="story-headline">RARE TORNADO SPINS OVER THOOTHUKUDI IN UNUSUAL WEATHER PHENOMENON</h3>
+        <p class="story-dek">A highly unusual meteorological event occurred in Tamil Nadu as a rare tornado was spotted spinning over Thoothukudi. Residents captured stunning footage of the distinct funnel cloud descending to the ground, a sight almost never witnessed in the state. Local weather experts explained that specific atmospheric conditions and moisture patterns triggered this sudden localized vortex. Fortunately, no major casualties or catastrophic damage to property have been reported in the immediate aftermath of the occurrence. The rare phenomenon has generated immense interest online and serves as a stark reminder of changing climate patterns across India.</p>
+        <span class="read-link" style="color:#C2570A">Read full story &#8594;</span>
+      </div></a>
+<a class="story" href="https://www.indiatoday.in/magazine/nation/story/20260629-a-leaky-pipeline-jal-jeevan-mission-scam-2929673-2026-06-19?utm_source=rss" target="_blank" rel="noopener">
       
       <div class="story-body">
-        <a class="headline" href="https://www.hindustantimes.com/india-news/pm-modi-commissions-3-indigenously-built-and-designed-naval-ships-in-kolkata-101782037965269.html" target="_blank" rel="noopener">PM MODI COMMISSIONS THREE NAVAL SHIPS IN KOLKATA ON YOGA DAY</a>
-        <p>Prime Prime Minister Narendra Modi commissioned three indigenously built and designed naval ships during a ceremony in Kolkata. Modi focused on India's maritime power and indigenous defence production under the 'Make in India' programme. He noted that 45 large naval platforms are currently under construction, calling it a testament to India's industrial capacity.</p>
-      </div>
-    </article>
-
-    <article class="story">
+        <h3 class="story-headline">THE JAL JEEVAN MISSION SCAM REVEALS A LEAKY PIPELINE IN RAJASTHAN</h3>
+        <p class="story-dek">The implementation of the central government's ambitious Jal Jeevan Mission in Rajasthan has been hit by a major corruption scandal. Investigations have exposed a network of illicit practices, leading to it being dubbed a "leaky pipeline" of public funds. Serious allegations of financial irregularities, sub-standard materials, and favoritism in contract allocations have surfaced. Government officials and contractors are under close scrutiny as investigative agencies probe the depth of the embezzlement. The unfolding controversy threatens to derail the crucial clean drinking water supply timeline for rural households in the state.</p>
+        <span class="read-link" style="color:#C2570A">Read full story &#8594;</span>
+      </div></a>
+<a class="story" href="https://www.indiatoday.in/india/story/thane-2-killed-as-speeding-bmw-overturns-after-crashing-into-divider-near-badlapur-maharashtra-news-2931167-2026-06-21?utm_source=rss" target="_blank" rel="noopener">
       
       <div class="story-body">
-        <a class="headline" href="https://www.hindustantimes.com/india-news/mumbai-rains-amid-water-crisis-offers-relief-from-heat-humidity-maharashtra-monsoon-rain-deficit-imd-weather-101782024452483.html" target="_blank" rel="noopener">MUMBAI MONSOON OFFERS RESPITE AMID WATER CRISIS</a>
-        <p>Delayed monsoon rains have lashed Mumbai, offering residents much-needed relief from intense heat and humidity. The India Meteorological Department stated that conditions are favorable for the southwest monsoon to advance further across parts of Maharashtra. The rain arrives at a critical time as the city navigates an ongoing water crisis.</p>
-      </div>
-    </article>
-
-    <article class="story">
+        <h3 class="story-headline">HIGH-SPEED BMW CRASH ON MUMBAI-VADODARA HIGHWAY KILLS TWO</h3>
+        <p class="story-dek">A horrific car crash near Badlapur on the Mumbai-Vadodara highway resulted in the tragic deaths of two individuals. The luxury convertible BMW was reportedly being driven at an extreme speed of 251 kmph with its soft-top hood open. The vehicle lost control, crashed violently into a road divider, and flipped multiple times before coming to a stop. The impact of the high-speed collision was so severe that the car was completely mangled, and body parts were found scattered over a 500-metre radius. Local police have registered a case and are investigating whether the driver was under the influence of alcohol during the fatal run.</p>
+        <span class="read-link" style="color:#C2570A">Read full story &#8594;</span>
+      </div></a></div>
+          </section>
+          <section id="indian-news--aaj-tak" class="outlet-section">
+            <h3 class="outlet-title" style="color:#C2570A">Aaj Tak
+              <span class="count">1 story</span>
+            </h3>
+            <div class="story-grid"><a class="story" href="https://www.aajtak.in/bihar/story/darbhanga-madrasa-children-chained-maulana-kadir-case-lclcn-strc-2584265-2026-06-21?utm_source=rss" target="_blank" rel="noopener">
       
       <div class="story-body">
-        <a class="headline" href="https://www.hindustantimes.com/india-news/walking-on-footpaths-a-fundamental-right-supreme-court-says-101781910845078.html" target="_blank" rel="noopener">SUPREME COURT DECLARES WALKING ON FOOTPATHS A FUNDAMENTAL RIGHT</a>
-        <p>The Supreme Court of India declared that walking on footpaths is a fundamental right of citizens. The court ruled that the right to walk flows from constitutional guarantees of free movement, expression, assembly, association, and the right to life. The decision emphasizes pedestrian safety and the legal protection of public walking spaces.</p>
-      </div>
-    </article>
-
-    <article class="story">
-      
-      <div class="story-body">
-        <a class="headline" href="https://www.hindustantimes.com/india-news/1994-batch-ias-who-is-vivek-aggarwal-new-vice-president-of-global-body-financial-action-task-force-fatf-101781933057682.html" target="_blank" rel="noopener">VIVEK AGGARWAL APPOINTED FATF VICE PRESIDENT</a>
-        <p>Union culture secretary Vivek Aggarwal has been appointed as the new vice president of the global body Financial Action Task Force (FATF). Aggarwal is a 1994-batch IAS officer with 30 years of professional experience. He will take over the position from United Kingdom national Giles Thomson, who has held the role since July 2025.</p>
-      </div>
-    </article></div>
-              </section>
+        <h3 class="story-headline">DARBHANGA MADRASA CRUELTY EXPOSED AS ESCAPED CHILDREN FOUND CHAINED</h3>
+        <p class="story-dek">A shocking case of cruelty has been exposed at a madrasa in Darbhanga, Bihar, after several children managed to escape. The children were found with iron chains bound to their feet and visible marks of physical beatings on their bodies. Following their rescue, the escaped students revealed the horrific treatment and torture they were subjected to inside the institution. Local authorities and police have initiated an investigation into the madrasa's administration, including the role of Maulana Kadir. This disturbing incident has sparked widespread outrage and raised serious concerns over child safety in such private religious institutions across the region.</p>
+        <span class="read-link" style="color:#C2570A">Read full story &#8594;</span>
+      </div></a></div>
+          </section>
         </div>
         <div class="catpanel" id="world-news" style="display:none">
+          <a class="lead-story" href="https://www.hindustantimes.com/world-news/us-iran-war-live-updates-switzerland-peace-deal-talks-nuclear-trump-jd-vance-abbas-araghchi-ghalibaf-strait-of-hormuz-101782003303843" target="_blank" rel="noopener">
+      
+      <div class="lead-body">
+        <span class="kicker" style="color:#1F4B5F">Top Story</span>
+        <h2 class="lead-headline">US-IRAN PEACE TALKS CONCLUDE IN SWITZERLAND WITH HISTORIC INTERIM DISCUSSIONS</h2>
+        <p class="lead-dek">The first round of historic peace talks between the United States and Iran has concluded in Switzerland, with US Vice President JD Vance reporting "great progress." Mediated by Pakistan and Qatar, the discussions focused on establishing an actual structure for negotiations, implementing a ceasefire in Lebanon, and addressing Iranian oil sales. During the talks, US President Donald Trump warned Iran to stop its proxies in Lebanon, threatening to strike Tehran very hard if commitments are breached. US intelligence reports suggest that Israeli Prime Minister Benjamin Netanyahu remains under intense domestic pressure to continue military operations, which could potentially hinder the peace process. Despite these geopolitical tensions, negotiators remain optimistic as they seek an interim deal on the nuclear program and the crucial Strait of Hormuz passage.</p>
+        <span class="read-link" style="color:#1F4B5F">Read full story &#8594;</span>
+      </div></a>
           <nav class="outlet-toc"><a href="#world-news--hindustan-times">Hindustan Times</a>
+<a href="#world-news--india-today">India Today</a>
+<a href="#world-news--aaj-tak">Aaj Tak</a>
 </nav>
           
-              <section id="world-news--hindustan-times" class="outlet-section">
-                <h3 class="outlet-title">Hindustan Times <span class="count">6 stories</span></h3>
-                <div class="story-grid">
-    <article class="story">
+          <section id="world-news--hindustan-times" class="outlet-section">
+            <h3 class="outlet-title" style="color:#1F4B5F">Hindustan Times
+              <span class="count">2 stories</span>
+            </h3>
+            <div class="story-grid"><a class="story" href="https://www.hindustantimes.com/world-news/us-news/giorgia-meloni-hits-back-after-donald-trumps-latest-attack-being-your-friend-has-not-helped-my-popularity-101781968018666" target="_blank" rel="noopener">
       
       <div class="story-body">
-        <a class="headline" href="https://www.hindustantimes.com/world-news/two-important-people-in-my-life-an-indian-and-a-pakistani-jd-vance-during-us-iran-peace-talks-in-switzerland-101782048967979.html" target="_blank" rel="noopener">JD VANCE ENTERS US-IRAN PEACE TALKS IN SWITZERLAND</a>
-        <p>American Vice-President JD Vance has arrived in Switzerland to participate in formal peace talks with Iranian negotiators. Vance was speaking at the Quadrilateral Meeting, which involves Pakistan, Qatar, Iran, and the United States. During the session, Vance highlighted his close personal relationships with both an Indian and a Pakistani individual as key influences in his life.</p>
-      </div>
-    </article>
-
-    <article class="story">
+        <h3 class="story-headline">DONALD TRUMP AND GIORGIA MELONI CLASH OVER G7 SUMMIT PHOTO FEUD</h3>
+        <p class="story-dek">An intense war of words has erupted between US President Donald Trump and Italian Prime Minister Giorgia Meloni following their interactions at the G7 summit in France. Trump publicly claimed that Meloni had "begged" him for a photo-op over and over again, suggesting her popularity in Italy is suffering due to her anti-US stance. Meloni swiftly hit back at the comments, declaring that being his friend had not helped her popularity and urged him to "focus" on himself. The public feud has escalated rapidly, prompting the Italian minister to cancel a planned trip to the United States in protest. Italian officials stated that Trump's offensive remarks towards their Prime Minister offend the entire nation of Italy.</p>
+        <span class="read-link" style="color:#1F4B5F">Read full story &#8594;</span>
+      </div></a>
+<a class="story" href="https://www.hindustantimes.com/world-news/scandals-rebellions-setbacks-uk-pm-keir-starmer-pushed-to-brink-of-resignation-labour-party-andy-burnham-101782025523333" target="_blank" rel="noopener">
       
       <div class="story-body">
-        <a class="headline" href="https://www.hindustantimes.com/world-news/uk-pm-keir-starmer-to-resign-on-monday-set-exit-timeline-101781990026077.html" target="_blank" rel="noopener">UK PM KEIR STARMER REPORTEDLY TO RESIGN</a>
-        <p>UK Prime Prime Minister Keir Starmer has reportedly been pushed to the brink of resignation following months of scandals, rebellions, and policy setbacks. A UK newspaper reported that Starmer reached the conclusion that his position as prime minister is no longer tenable. If Starmer resigns, Andy Burnham is currently positioned as the prominent prime-minister-in-waiting to challenge for the Labour Party leadership.</p>
-      </div>
-    </article>
-
-    <article class="story">
+        <h3 class="story-headline">UK PM KEIR STARMER FACES INTENSE PRESSURE TO RESIGN AMID LABOUR REVOLT</h3>
+        <p class="story-dek">British Prime Minister Keir Starmer has been pushed to the brink of resignation following months of political scandals, policy u-turns, and internal party rebellions. Reports indicate that Starmer has concluded his position is no longer tenable and is widely expected to set an exit timeline on Monday. The internal crisis has deepened significantly after Andy Burnham’s by-election victory, fueling calls for a leadership challenge within the Labour Party. Despite the immense pressure and speculation surrounding his future, Starmer’s spokespeople maintain that he remains focused on his immediate prime ministerial duties. The political turmoil has left the United Kingdom's government in a state of high uncertainty as the ruling party braces for a potential transition.</p>
+        <span class="read-link" style="color:#1F4B5F">Read full story &#8594;</span>
+      </div></a></div>
+          </section>
+          <section id="world-news--india-today" class="outlet-section">
+            <h3 class="outlet-title" style="color:#1F4B5F">India Today
+              <span class="count">2 stories</span>
+            </h3>
+            <div class="story-grid"><a class="story" href="https://www.indiatoday.in/world/story/brexit-10-years-later-uk-economy-politics-migration-eu-debate-ptag-2931264-2026-06-21?utm_source=rss" target="_blank" rel="noopener">
       
       <div class="story-body">
-        <a class="headline" href="https://www.hindustantimes.com/world-news/iran-shuts-strait-of-hormuz-over-ceasefire-violations-days-after-agreement-over-peace-deal-101781962373387.html" target="_blank" rel="noopener">IRAN SHUTS STRAIT OF HORMUZ CITING ISRAELI CEASEFIRE VIOLATIONS</a>
-        <p>Iran has shut the strategic Strait of Hormuz, citing Israeli ceasefire violations in Lebanon and a breach of commitments by the United States. Iran's joint military command warned that the closure is a first step and that further measures will follow if aggression continues. U.S. President Donald Trump responded by threatening to impose a U.S. levy on shipping through the strait if the talks fail.</p>
-      </div>
-    </article>
-
-    <article class="story">
+        <h3 class="story-headline">TEN YEARS LATER, ECONOMIC AND POLITICAL AFTERSHOCKS OF BREXIT HAUNT BRITAIN</h3>
+        <p class="story-dek">A decade after the historic 2016 referendum, the economic and political aftershocks of Brexit continue to haunt the United Kingdom. Analysts report that the decision to leave the European Union has changed Britain in many small ways, mostly for the worse, affecting migration, trade, and overall growth. Public debate remains highly polarized as the nation struggles to cope with the long-term consequences of losing integration with European markets. The political landscape has also been permanently reshaped, with subsequent governments finding it difficult to deliver on the initial promises of the exit campaign. Ten years on, many citizens and economists agree that Britain is still not ready to rejoin, leaving the country to navigate a difficult and isolated path forward.</p>
+        <span class="read-link" style="color:#1F4B5F">Read full story &#8594;</span>
+      </div></a>
+<a class="story" href="https://www.indiatoday.in/sports/football/story/spain-vs-saudi-arabia-fifa-world-cup-2026-live-score-updates-belgium-vs-iran-2931263-2026-06-21?utm_source=rss" target="_blank" rel="noopener">
       
       <div class="story-body">
-        <a class="headline" href="https://www.hindustantimes.com/world-news/us-news/giorgia-meloni-hits-back-after-donald-trumps-latest-attack-being-your-friend-has-not-helped-my-popularity-101781968018666.html" target="_blank" rel="noopener">MELONI-TRUMP G7 DISPUTE ESCALATES OVER SUMMIT PHOTO-OP</a>
-        <p>Italian Prime Minister Giorgia Meloni has hit back at Donald Trump's claims that she "begged" for a photo with him at the G7 summit in France. Trump escalated the feud by suggesting Meloni is doing poorly in Italy and that her popularity suffered due to her anti-U.S. stance. Meloni responded that being Trump's friend has not helped her popularity and urged the U.S. president to focus on himself.</p>
-      </div>
-    </article>
-
-    <article class="story">
+        <h3 class="story-headline">SPAIN ROUTS SAUDI ARABIA 3-0 IN FIFA WORLD CUP 2026 TO REMAIN RAMPANT</h3>
+        <p class="story-dek">Spain's national football team continued its rampant run in the FIFA World Cup 2026 with a decisive 3-0 victory over Saudi Arabia. Young sensation Lamine Yamal and forward Mikel Oyarzabal starred in the match, with Oyarzabal netting a brilliant double to secure the three points. Spain dominated possession and tempo from the opening whistle, leaving the Saudi Arabian squad with very few opportunities to mount a credible counter-attack. The win places Spain in a commanding position in their group stage as they look to advance deep into the tournament. Fans and pundits have praised the team's tactical discipline and clinical finishing, making them one of the favorites in the ongoing global competition.</p>
+        <span class="read-link" style="color:#1F4B5F">Read full story &#8594;</span>
+      </div></a></div>
+          </section>
+          <section id="world-news--aaj-tak" class="outlet-section">
+            <h3 class="outlet-title" style="color:#1F4B5F">Aaj Tak
+              <span class="count">1 story</span>
+            </h3>
+            <div class="story-grid"><a class="story" href="https://www.aajtak.in/entertainment/hollywood/story/netflix-breaking-bad-series-star-giancarlo-esposito-becomes-muslim-in-saudi-arabia-offered-namaz-tmovj-dskc-2584284-2026-06-21?utm_source=rss" target="_blank" rel="noopener">
       
       <div class="story-body">
-        <a class="headline" href="https://www.hindustantimes.com/world-news/us-news/boyle-heights-warehouse-fire-update-gavin-newson-declares-state-of-emergency-for-la-county-scary-videos-emerge-101782026009655.html" target="_blank" rel="noopener">GAVIN NEWSOM DECLARES STATE OF EMERGENCY FOR LA COUNTY AMID MASSIVE FIRE</a>
-        <p>California Governor Gavin Newsom has officially declared a state of emergency for Los Angeles County due to a massive warehouse fire in Boyle Heights. The complex blaze prompted authorities to issue a shelter-in-place order, which was later lifted as containment efforts progressed. Dramatic videos have emerged online showing a lone firefighter battling the massive flames against a hazardous backdrop.</p>
-      </div>
-    </article>
-
-    <article class="story">
-      
-      <div class="story-body">
-        <a class="headline" href="https://www.hindustantimes.com/world-news/us-news/nancy-guthrie-update-sheriff-points-out-potential-motive-to-investigation-team-101782046308544.html" target="_blank" rel="noopener">NANCY GUTHRIE DISAPPEARANCE INVESTIGATION POINTS TO WRENCH ATTACK THEORY</a>
-        <p>The ongoing investigation into the disappearance of 84-year-old Nancy Guthrie has turned to a theory that she was targeted in a sophisticated wrench attack. Former FBI agent Jennifer Coffindaffer suggested a "wrench by proxy" theory, noting that Guthrie's Facebook account was modified months after her disappearance. Meanwhile, search efforts in Mexico have uncovered 25 unmarked graves as investigators continue to seek fresh leads.</p>
-      </div>
-    </article></div>
-              </section>
+        <h3 class="story-headline">NETFLIX'S BREAKING BAD STAR GIANCARLO ESPOSITO CONVERTS TO ISLAM IN SAUDI ARABIA</h3>
+        <p class="story-dek">Acclaimed Hollywood actor Giancarlo Esposito, best known for his iconic role as Gus Fring in the hit series Breaking Bad, has reportedly converted to Islam. A video of the actor offering namaz (prayers) in Saudi Arabia has surfaced online and quickly gone viral across various social media platforms. Esposito was seen participating in the religious rituals with deep respect, earning widespread praise and warm welcomes from fans across the Islamic world. The actor, who was visiting the country, has not yet issued a formal public statement regarding his personal spiritual journey. The surprising footage has sparked immense curiosity and support from his global fanbase, highlighting his deep connection with his admirers in the Middle East.</p>
+        <span class="read-link" style="color:#1F4B5F">Read full story &#8594;</span>
+      </div></a></div>
+          </section>
         </div>
   
             <section id="events" class="events-section">
-              <h2>Upcoming Events In India</h2>
-              <p class="empty">No events scheduled this week</p>
+              <div class="section-head"><h2>Upcoming Events In India</h2></div>
+              <div class="event-list">
+    <div class="event">
+      <div class="event-media"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ6ELGEa-Sl9DsIAkFrqeAUrHdGeLY9h4RMdpNRumztQ&amp;s=10" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
+      <div class="event-body">
+        <h3>HOME BARISTAS OF INDIA 2026</h3>
+        <p>The exciting Season 3 of Home Baristas of India returns, bringing together some of the country’s most passionate home brewers. Attendees will have the opportunity to taste selected coffees championed by these talented brewers. The event takes place at Nerlu Cafe in Bengaluru.</p>
+        <a class="more" href="https://urbanaut.app/spot/home-baristas-of-india-2026" target="_blank" rel="noopener">Event details &#8599;</a>
+      </div>
+    </div>
+
+    <div class="event">
+      <div class="event-media"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRH6BF9AgZBAj4O0FE2vfzLL46iaXXwZ-R8lHMEHSUeCg&amp;s=10" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
+      <div class="event-body">
+        <h3>AB HAI AAPKI BARI BY INDER SAHANI IN GURUGRAM</h3>
+        <p>Get ready for an evening of laughter as stand-up comedian Inder Sahani performs live. The show is set to take place at The Laugh Store inside DLF Cyberhub in Gurugram, Haryana.</p>
+        <a class="more" href="https://www.stubhub.com/za/inder-sahani-gurugram-tickets-6-21-2026/event/161053864/" target="_blank" rel="noopener">Event details &#8599;</a>
+      </div>
+    </div>
+
+    <div class="event">
+      <div class="event-media"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTI1vWWtzmLfsVjoAUhUBZVOep5ym6hj0rxWNwBP7wkXQ&amp;s=10" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
+      <div class="event-body">
+        <h3>DAKSHA: CRAFTING VOICES EXHIBITION IN NEW DELHI</h3>
+        <p>This unique curated exhibition brings the living craft traditions of Eastern India to Vasant Kunj in New Delhi. It features evolving handcrafted masterpieces created through collaborations with regional artisans.</p>
+        <a class="more" href="https://delhi-fun-dos.com/events/daksha-crafting-voices-brings-the-living-traditions-of-eastern-india-to-delhi/" target="_blank" rel="noopener">Event details &#8599;</a>
+      </div>
+    </div></div>
             </section>
-  <footer>Generated automatically from RSS feeds &middot; Last updated Sunday, 21 June 2026</footer>
+  <footer>Compiled automatically from Hindustan Times &amp; India Today RSS feeds &middot; Last updated Sunday, 21 June 2026</footer>
 </div>
 <script>
   document.querySelectorAll('.cat-btn').forEach(function (btn) {
@@ -245,6 +356,7 @@
       btn.classList.add('active');
       var panel = document.getElementById(btn.dataset.cat);
       if (panel) panel.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   });
 </script>
