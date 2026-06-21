@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Daily Brief</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; }
   body {
@@ -14,27 +14,40 @@
     background: #f7f4ed;
     color: #1a1a1a;
   }
-  .wrap { max-width: 680px; margin: 0 auto; padding: 48px 24px 80px; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 48px 24px 80px; }
   header.masthead { text-align: center; margin-bottom: 8px; }
   .masthead h1 {
-    font-family: 'Newsreader', Georgia, serif;
-    font-size: 42px;
-    font-weight: 600;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 44px;
+    font-weight: 800;
     letter-spacing: 0.5px;
     margin: 0 0 6px;
   }
   .masthead .rule { border: none; border-top: 3px double #9a3324; margin: 14px 0 10px; }
   .masthead .meta { font-size: 13px; color: #7a7468; letter-spacing: 0.3px; }
-  nav.toc { display: flex; justify-content: center; flex-wrap: wrap; gap: 18px; margin: 22px 0 0; font-size: 12.5px; }
-  nav.toc a {
-    color: #9a3324; text-decoration: none; font-weight: 600;
-    letter-spacing: 0.4px; text-transform: uppercase;
+
+  nav.maincats { display: flex; justify-content: center; gap: 10px; margin: 26px 0 0; }
+  .cat-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase;
+    padding: 10px 22px; border-radius: 999px; border: 2px solid #9a3324;
+    background: transparent; color: #9a3324; cursor: pointer; transition: all 0.15s ease;
   }
-  nav.toc a:hover { text-decoration: underline; }
-  section { margin-top: 46px; }
-  section h2 {
-    font-family: 'Newsreader', serif;
+  .cat-btn:hover { background: #f1e4dc; }
+  .cat-btn.active { background: #9a3324; color: #fff; }
+
+  nav.outlet-toc { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; margin: 28px 0 0; font-size: 12px; }
+  nav.outlet-toc a {
+    color: #9a3324; text-decoration: none; font-weight: 600;
+    letter-spacing: 0.3px; text-transform: uppercase;
+  }
+  nav.outlet-toc a:hover { text-decoration: underline; }
+
+  .outlet-section { margin-top: 44px; }
+  .outlet-title {
+    font-family: 'Playfair Display', serif;
     font-size: 13px;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 2px;
     color: #9a3324;
@@ -45,26 +58,43 @@
     align-items: baseline;
     gap: 8px;
   }
-  section h2 .count {
+  .outlet-title .count {
     color: #a39c8c; font-weight: 400; letter-spacing: 0;
     text-transform: none; font-size: 11.5px; margin-left: auto;
   }
+
+  .story-grid { display: flex; flex-direction: column; }
   .story { padding: 22px 0; border-bottom: 1px solid #e7e1d3; }
   .story:last-child { border-bottom: none; }
+  .story-img {
+    width: 100%; max-height: 240px; object-fit: cover;
+    border-radius: 8px; margin-bottom: 14px; display: block;
+    background: #e7e1d3;
+  }
   .story .headline, .story .headline-plain {
-    font-family: 'Newsreader', Georgia, serif;
-    font-size: 21px; line-height: 1.3; font-weight: 600;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 22px; line-height: 1.3; font-weight: 800;
     color: #1a1a1a; text-decoration: none; display: inline-block; margin-bottom: 8px;
   }
   .story a.headline:hover { color: #9a3324; }
   .story a.headline::after { content: " \2197"; font-size: 14px; color: #9a3324; }
   .story p { font-size: 15.5px; line-height: 1.65; color: #3c382f; margin: 0; }
-  .event { padding: 18px 0; border-bottom: 1px solid #e7e1d3; }
+
+  .events-section { margin-top: 56px; border-top: 3px double #9a3324; padding-top: 30px; }
+  .events-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+    color: #9a3324; margin-bottom: 18px;
+  }
+  .event { display: flex; gap: 16px; padding: 18px 0; border-bottom: 1px solid #e7e1d3; }
   .event:last-child { border-bottom: none; }
-  .event h3 { font-family: 'Newsreader', serif; font-size: 18px; margin: 0 0 6px; }
+  .event-img { width: 110px; height: 90px; object-fit: cover; border-radius: 6px; flex-shrink: 0; background: #e7e1d3; }
+  .event-body { flex: 1; }
+  .event h3 { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 18px; margin: 0 0 6px; }
   .event p { font-size: 14.5px; color: #3c382f; margin: 0 0 8px; }
-  .event a.more { font-size: 13px; color: #9a3324; font-weight: 600; text-decoration: none; }
+  .event a.more { font-size: 13px; color: #9a3324; font-weight: 700; text-decoration: none; }
   .event a.more:hover { text-decoration: underline; }
+
   .empty { font-style: italic; color: #998f7c; font-size: 14px; padding: 14px 0; }
   footer { margin-top: 60px; text-align: center; font-size: 12px; color: #a39c8c; }
 </style>
@@ -75,143 +105,148 @@
     <h1>The Daily Brief</h1>
     <hr class="rule">
     <div class="meta">Your AI-curated news digest &middot; Sunday, 21 June 2026</div>
-    <nav class="toc"><a href="#hindustan-times">Hindustan Times</a>
-<a href="#india-today">India Today</a>
-<a href="#aaj-tak">Aaj Tak</a>
-<a href="#the-hindu">The Hindu</a>
-<a href="#times-of-india">Times Of India</a>
-<a href="#upcoming-events-in-india">Upcoming Events In India</a></nav>
+    <nav class="maincats"><button class="cat-btn active" data-cat="indian-news" type="button">Indian News</button>
+<button class="cat-btn" data-cat="world-news" type="button">World News</button>
+</nav>
   </header>
   
-        <section id="hindustan-times">
-          <h2>Hindustan Times <span class="count">4 stories</span></h2>
+        <div class="catpanel" id="indian-news" style="display:block">
+          <nav class="outlet-toc"><a href="#indian-news--hindustan-times">Hindustan Times</a>
+</nav>
           
-          <div class="story">
-            <a class="headline" href="https://www.hindustantimes.com/world-news/us-news/chicago-crime-scary-moments-as-robbery-victim-stabs-attackers-on-cta-bus-in-west-englewood-community-3-arrested-101782046356854.html" target="_blank" rel="noopener">CHICAGO CRIME: SCARY MOMENTS AS ROBBERY VICTIM STABS ATTACKERS ON CTA BUS IN WEST ENGLEWOOD COMMUNITY; 3 ARRESTED</a>
-            <p>A frightening robbery attempt occurred on a CTA bus in Chicago's South Side, involving three men and a victim who defended himself with a sharp object. The victim managed to stab the attackers during the encounter. Following the incident, three suspects were arrested by local law enforcement. The event has sparked concerns about safety on public transit in the West Englewood area.</p>
-          </div>
+              <section id="indian-news--hindustan-times" class="outlet-section">
+                <h3 class="outlet-title">Hindustan Times <span class="count">7 stories</span></h3>
+                <div class="story-grid">
+    <article class="story">
+      
+      <div class="story-body">
+        <a class="headline" href="https://www.hindustantimes.com/india-news/19-year-old-neet-hisar-aspirant-dies-by-suicide-hours-before-re-test-third-attempt-total-deaths-nta-govt-police-haryana-101782049894783.html" target="_blank" rel="noopener">19-YEAR-OLD NEET ASPIRANT DIES BY SUICIDE IN HISAR</a>
+        <p>A 19-year-old NEET aspirant from Hisar, Haryana, allegedly died by suicide hours before she was scheduled to take the medical entrance re-test. According to her family members, she consumed pesticide at her home on Sunday morning. This was to be her third attempt at the examination, and her death marks the 14th suicide associated with the medical exam in India.</p>
+      </div>
+    </article>
 
-          <div class="story">
-            <a class="headline" href="https://www.hindustantimes.com/world-news/us-news/nancy-guthrie-update-sheriff-points-out-potential-motive-to-investigation-team-101782046308544.html" target="_blank" rel="noopener">NANCY GUTHRIE UPDATE: SHERIFF POINTS OUT POTENTIAL MOTIVE TO INVESTIGATION TEAM</a>
-            <p>Pima County Sheriff Chris Nanos has confirmed that the disappearance of 84-year-old Nancy Guthrie, mother of TODAY show host Savannah Guthrie, may be linked to a wrench attack. Investigators are exploring this new lead to understand the circumstances surrounding her sudden disappearance several months ago. The sheriff's office has pointed out this potential motive to the active investigation team to guide their ongoing search efforts.</p>
-          </div>
+    <article class="story">
+      
+      <div class="story-body">
+        <a class="headline" href="https://www.hindustantimes.com/india-news/not-getting-development-funds-what-sena-ubt-mp-nagesh-patil-ashtikar-said-on-crossover-to-eknath-shinde-camp-101782046110009.html" target="_blank" rel="noopener">SHIV SENA UBT MP NAGESH PATIL CROSSES OVER TO SHINDE CAMP</a>
+        <p>Shiv Sena (UBT) MP Nagesh Patil Ashtikar has confirmed his crossover to Eknath Shinde's Shiv Sena faction. In a video posted on his Instagram, Patil stated that he had not compromised on his ideology and had simply transitioned from one Shiv Sena to another. He explained that his decision was driven by not receiving development funds and being hurt by recent remarks.</p>
+      </div>
+    </article>
 
-          <div class="story">
-            <a class="headline" href="https://www.hindustantimes.com/world-news/us-news/trump-posts-mysterious-photo-of-unknown-woman-with-great-daughter-caption-sparks-online-buzz-who-the-hell-is-this-101782043257606.html" target="_blank" rel="noopener">TRUMP POSTS MYSTERIOUS PHOTO OF UNKNOWN WOMAN WITH ‘GREAT DAUGHTER’ CAPTION, SPARKS ONLINE BUZZ; ‘WHO THE HELL IS THIS?’</a>
-            <p>President Donald Trump has sparked widespread confusion online after sharing a photo of an unidentified woman with the caption "Great daughter". The post immediately went viral, leading social media users to question the woman's identity and the context of the caption. The mystery has generated intense speculation and online buzz as observers try to decipher the meaning behind the post.</p>
-          </div>
+    <article class="story">
+      
+      <div class="story-body">
+        <a class="headline" href="https://www.hindustantimes.com/india-news/death-people-hospitalised-alleged-ammonia-gas-leak-in-a-shrimp-processing-facility-near-chennai-tamil-nadu-101782038678087.html" target="_blank" rel="noopener">SEVEN KILLED IN TIRUVALLUR AMMONIA GAS LEAK</a>
+        <p>A suspected ammonia gas leak at a shrimp processing facility in Tamil Nadu's Tiruvallur has left seven people dead and several others hospitalized. The incident occurred on Sunday at the St Peter's Paul Seafoods Exports facility in Kannigaipair near Periyapalayam. Emergency medical teams have responded, and the survivors are receiving treatment.</p>
+      </div>
+    </article>
 
-          <div class="story">
-            <a class="headline" href="https://www.hindustantimes.com/india-news/bengal-finally-on-path-envisioned-in-1947-pm-modi-101782019837708.html" target="_blank" rel="noopener">BENGAL FINALLY ON PATH ENVISIONED IN 1947: PM MODI</a>
-            <p>Prime Minister Narendra Modi addressed a public gathering in West Bengal's Hooghly district to mark "Paschimbanga Divas" (West Bengal Day). During his speech, the Prime Minister asserted that the state is finally on the path of progress and development envisioned during India's independence in 1947. He also emphasized the power of the democratic process, noting that those who looted public money are now being held accountable.</p>
-          </div>
-        </section>
+    <article class="story">
+      
+      <div class="story-body">
+        <a class="headline" href="https://www.hindustantimes.com/india-news/pm-modi-commissions-3-indigenously-built-and-designed-naval-ships-in-kolkata-101782037965269.html" target="_blank" rel="noopener">PM MODI COMMISSIONS THREE NAVAL SHIPS IN KOLKATA ON YOGA DAY</a>
+        <p>Prime Prime Minister Narendra Modi commissioned three indigenously built and designed naval ships during a ceremony in Kolkata. Modi focused on India's maritime power and indigenous defence production under the 'Make in India' programme. He noted that 45 large naval platforms are currently under construction, calling it a testament to India's industrial capacity.</p>
+      </div>
+    </article>
 
-        <section id="india-today">
-          <h2>India Today <span class="count">3 stories</span></h2>
+    <article class="story">
+      
+      <div class="story-body">
+        <a class="headline" href="https://www.hindustantimes.com/india-news/mumbai-rains-amid-water-crisis-offers-relief-from-heat-humidity-maharashtra-monsoon-rain-deficit-imd-weather-101782024452483.html" target="_blank" rel="noopener">MUMBAI MONSOON OFFERS RESPITE AMID WATER CRISIS</a>
+        <p>Delayed monsoon rains have lashed Mumbai, offering residents much-needed relief from intense heat and humidity. The India Meteorological Department stated that conditions are favorable for the southwest monsoon to advance further across parts of Maharashtra. The rain arrives at a critical time as the city navigates an ongoing water crisis.</p>
+      </div>
+    </article>
+
+    <article class="story">
+      
+      <div class="story-body">
+        <a class="headline" href="https://www.hindustantimes.com/india-news/walking-on-footpaths-a-fundamental-right-supreme-court-says-101781910845078.html" target="_blank" rel="noopener">SUPREME COURT DECLARES WALKING ON FOOTPATHS A FUNDAMENTAL RIGHT</a>
+        <p>The Supreme Court of India declared that walking on footpaths is a fundamental right of citizens. The court ruled that the right to walk flows from constitutional guarantees of free movement, expression, assembly, association, and the right to life. The decision emphasizes pedestrian safety and the legal protection of public walking spaces.</p>
+      </div>
+    </article>
+
+    <article class="story">
+      
+      <div class="story-body">
+        <a class="headline" href="https://www.hindustantimes.com/india-news/1994-batch-ias-who-is-vivek-aggarwal-new-vice-president-of-global-body-financial-action-task-force-fatf-101781933057682.html" target="_blank" rel="noopener">VIVEK AGGARWAL APPOINTED FATF VICE PRESIDENT</a>
+        <p>Union culture secretary Vivek Aggarwal has been appointed as the new vice president of the global body Financial Action Task Force (FATF). Aggarwal is a 1994-batch IAS officer with 30 years of professional experience. He will take over the position from United Kingdom national Giles Thomson, who has held the role since July 2025.</p>
+      </div>
+    </article></div>
+              </section>
+        </div>
+        <div class="catpanel" id="world-news" style="display:none">
+          <nav class="outlet-toc"><a href="#world-news--hindustan-times">Hindustan Times</a>
+</nav>
           
-          <div class="story">
-            <a class="headline" href="https://www.indiatoday.in/world/story/we-made-great-progress-now-we-see-a-future-together-vance-briefs-media-after-peace-talks-in-switzerland-2931168-2026-06-21?utm_source=rss" target="_blank" rel="noopener">WE MADE GREAT PROGRESS, NOW WE SEE FUTURE TOGETHER: VANCE AFTER TALKS WITH IRAN</a>
-            <p>US Vice President JD Vance announced that significant progress has been made during high-level peace talks with Iranian negotiators in Switzerland. Vance briefed the media, stating that both nations are beginning to envision a shared future following the diplomatic sessions. The discussions, which are being mediated by Pakistan and Qatar, aim to secure a comprehensive regional ceasefire and address nuclear sites.</p>
-          </div>
+              <section id="world-news--hindustan-times" class="outlet-section">
+                <h3 class="outlet-title">Hindustan Times <span class="count">6 stories</span></h3>
+                <div class="story-grid">
+    <article class="story">
+      
+      <div class="story-body">
+        <a class="headline" href="https://www.hindustantimes.com/world-news/two-important-people-in-my-life-an-indian-and-a-pakistani-jd-vance-during-us-iran-peace-talks-in-switzerland-101782048967979.html" target="_blank" rel="noopener">JD VANCE ENTERS US-IRAN PEACE TALKS IN SWITZERLAND</a>
+        <p>American Vice-President JD Vance has arrived in Switzerland to participate in formal peace talks with Iranian negotiators. Vance was speaking at the Quadrilateral Meeting, which involves Pakistan, Qatar, Iran, and the United States. During the session, Vance highlighted his close personal relationships with both an Indian and a Pakistani individual as key influences in his life.</p>
+      </div>
+    </article>
 
-          <div class="story">
-            <a class="headline" href="https://www.indiatoday.in/world/story/trump-warns-iran-to-stop-proxies-in-lebanon-or-us-will-hit-tehran-very-hard-again-2931202-2026-06-21?utm_source=rss" target="_blank" rel="noopener">TRUMP WARNS IRAN TO STOP PROXIES IN LEBANON OR US WILL HIT TEHRAN 'VERY HARD AGAIN'</a>
-            <p>US President Donald Trump has issued a stern warning to Iran, demanding an immediate halt to its proxy activities in Lebanon. Trump threatened that the United States would strike Tehran "very hard again" if it fails to comply and stop supporting militant groups. The warning comes as ongoing fighting in Lebanon threatens to undermine the peace negotiations currently taking place in Switzerland.</p>
-          </div>
+    <article class="story">
+      
+      <div class="story-body">
+        <a class="headline" href="https://www.hindustantimes.com/world-news/uk-pm-keir-starmer-to-resign-on-monday-set-exit-timeline-101781990026077.html" target="_blank" rel="noopener">UK PM KEIR STARMER REPORTEDLY TO RESIGN</a>
+        <p>UK Prime Prime Minister Keir Starmer has reportedly been pushed to the brink of resignation following months of scandals, rebellions, and policy setbacks. A UK newspaper reported that Starmer reached the conclusion that his position as prime minister is no longer tenable. If Starmer resigns, Andy Burnham is currently positioned as the prominent prime-minister-in-waiting to challenge for the Labour Party leadership.</p>
+      </div>
+    </article>
 
-          <div class="story">
-            <a class="headline" href="https://www.indiatoday.in/science/story/thoothukudi-tornado-tamil-nadu-rare-india-weather-formation-explained-2931171-2026-06-21?utm_source=rss" target="_blank" rel="noopener">RARE TORNADO SPINS OVER THOOTHUKUDI, A SIGHT TAMIL NADU ALMOST NEVER SEES</a>
-            <p>A rare and dramatic tornado funnel was spotted spinning over Thoothukudi in Tamil Nadu, capturing the attention of residents and meteorologists alike. Such extreme weather formations are historically unprecedented in the southern region of India, making it a highly unusual sight. Videos of the event have quickly gone viral online as experts work to explain the atmospheric conditions that led to this rare occurrence.</p>
-          </div>
-        </section>
+    <article class="story">
+      
+      <div class="story-body">
+        <a class="headline" href="https://www.hindustantimes.com/world-news/iran-shuts-strait-of-hormuz-over-ceasefire-violations-days-after-agreement-over-peace-deal-101781962373387.html" target="_blank" rel="noopener">IRAN SHUTS STRAIT OF HORMUZ CITING ISRAELI CEASEFIRE VIOLATIONS</a>
+        <p>Iran has shut the strategic Strait of Hormuz, citing Israeli ceasefire violations in Lebanon and a breach of commitments by the United States. Iran's joint military command warned that the closure is a first step and that further measures will follow if aggression continues. U.S. President Donald Trump responded by threatening to impose a U.S. levy on shipping through the strait if the talks fail.</p>
+      </div>
+    </article>
 
-        <section id="aaj-tak">
-          <h2>Aaj Tak <span class="count">2 stories</span></h2>
-          
-          <div class="story">
-            <a class="headline" href="https://www.aajtak.in/world/story/jd-vance-names-usha-vance-and-asim-munir-as-who-is-his-favourite-indian-and-pakistani-ntc-dpmx-dskc-2584258-2026-06-21?utm_source=rss" target="_blank" rel="noopener">'एक मेरी पत्नी, दूसरे फील्ड मार्शल मुनीर', जेडी वेंस बोले- इंडिया-PAK के ये दो लोग मेरे लिए सबसे खास</a>
-            <p>During a press interaction after the Switzerland peace talks, US Vice President JD Vance made a lighthearted comment that quickly went viral. Vance joked that he has two highly significant people in his life: his wife, Usha Vance, who is of Indian origin, and Pakistan's Army Chief, General Asim Munir. The remark highlighted the personal and diplomatic ties surrounding the ongoing US-Iran peace negotiations mediated by Pakistan.</p>
-          </div>
+    <article class="story">
+      
+      <div class="story-body">
+        <a class="headline" href="https://www.hindustantimes.com/world-news/us-news/giorgia-meloni-hits-back-after-donald-trumps-latest-attack-being-your-friend-has-not-helped-my-popularity-101781968018666.html" target="_blank" rel="noopener">MELONI-TRUMP G7 DISPUTE ESCALATES OVER SUMMIT PHOTO-OP</a>
+        <p>Italian Prime Minister Giorgia Meloni has hit back at Donald Trump's claims that she "begged" for a photo with him at the G7 summit in France. Trump escalated the feud by suggesting Meloni is doing poorly in Italy and that her popularity suffered due to her anti-U.S. stance. Meloni responded that being Trump's friend has not helped her popularity and urged the U.S. president to focus on himself.</p>
+      </div>
+    </article>
 
-          <div class="story">
-            <a class="headline" href="https://www.aajtak.in/india/news/story/india-boosts-russian-and-uae-oil-imports-cut-down-us-imports-amid-hormuz-uncertainty-ntc-dpmx-dskc-2584191-2026-06-21?utm_source=rss" target="_blank" rel="noopener">रूस से बंपर तेल खरीद, US से आयात घटाया... भारत ने ऐसे निकाला होर्मुज संकट का तोड़</a>
-            <p>To counter the geopolitical uncertainty surrounding the Strait of Hormuz, India has significantly altered its energy import strategy. The country has boosted its crude oil imports from Russia and the UAE while systematically reducing its reliance on US imports. This strategic diversification helps protect India's domestic fuel supply and household budgets from sudden supply disruptions.</p>
-          </div>
-        </section>
+    <article class="story">
+      
+      <div class="story-body">
+        <a class="headline" href="https://www.hindustantimes.com/world-news/us-news/boyle-heights-warehouse-fire-update-gavin-newson-declares-state-of-emergency-for-la-county-scary-videos-emerge-101782026009655.html" target="_blank" rel="noopener">GAVIN NEWSOM DECLARES STATE OF EMERGENCY FOR LA COUNTY AMID MASSIVE FIRE</a>
+        <p>California Governor Gavin Newsom has officially declared a state of emergency for Los Angeles County due to a massive warehouse fire in Boyle Heights. The complex blaze prompted authorities to issue a shelter-in-place order, which was later lifted as containment efforts progressed. Dramatic videos have emerged online showing a lone firefighter battling the massive flames against a hazardous backdrop.</p>
+      </div>
+    </article>
 
-        <section id="the-hindu">
-          <h2>The Hindu <span class="count">3 stories</span></h2>
-          
-          <div class="story">
-            <a class="headline" href="https://www.thehindu.com/news/cities/Tiruchirapalli/neet-re-test-attendance-drops-sharply-in-tiruchi-and-other-central-districts/article71129590.ece" target="_blank" rel="noopener">NEET RE-TEST ATTENDANCE DROPS SHARPLY IN TIRUCHI AND OTHER CENTRAL DISTRICTS</a>
-            <p>The attendance for the NEET-UG 2026 re-examination witnessed a sharp decline in Tiruchi and several other central districts in Tamil Nadu. Many eligible candidates chose to remain absent from the rescheduled medical entrance exam. The National Testing Agency conducted the re-test under tight security measures following previous allegations of paper leaks and irregularities.</p>
-          </div>
-
-          <div class="story">
-            <a class="headline" href="https://www.thehindu.com/news/national/kerala/shwetha-menon-quits-amma-executive-body-resigns-on-june-21-2026/article71129184.ece" target="_blank" rel="noopener">SHWETA MENON QUITS MALAYALAM ACTORS’ BODY AMMA; EXECUTIVE COMMITTEE RESIGNS AT STORMY MEET</a>
-            <p>Actress Shweta Menon has resigned from her position in the Malayalam actors' association, AMMA, leading to the collective resignation of the entire executive committee. Menon voiced concerns during a stormy meeting, alleging that certain accused individuals were attempting to hijack the organization. This move mirrors past disputes within the film body regarding the safety and representation of women in the industry.</p>
-          </div>
-
-          <div class="story">
-            <a class="headline" href="https://www.thehindu.com/news/national/kerala/offshore-breakwater-project-at-poonthura-shows-positive-results/article71129276.ece" target="_blank" rel="noopener">OFFSHORE BREAKWATER PROJECT AT POONTHURA SHOWS POSITIVE RESULTS</a>
-            <p>The offshore breakwater project implemented at Poonthura has yielded highly positive results in combating coastal erosion. The Kerala State Coastal Area Development Corporation is currently evaluating the feasibility of expanding this successful model to other vulnerable coastal areas. These areas include Shangumugham, Valiyathura, Kollam, and Cherai to protect local communities.</p>
-          </div>
-        </section>
-
-        <section id="times-of-india">
-          <h2>Times Of India <span class="count">3 stories</span></h2>
-          
-          <div class="story">
-            <a class="headline" href="https://timesofindia.indiatimes.com/defence/news/why-ins-dunagiri-ins-sanshodhak-and-ins-agray-are-more-powerful-together-than-separately/articleshow/131888327.cms" target="_blank" rel="noopener">MAP, HUNT, KILL: INSIDE INDIA'S POWERFUL TRISHUL FOR NETWORKED NAVAL WARFARE</a>
-            <p>India's Navy is enhancing its maritime warfare capabilities by integrating new vessels into a cohesive network. INS Dunagiri, INS Sanshodhak, and INS Agray were commissioned, showcasing a strategy focused on layered awareness and combat power. This integrated approach aims to bolster India's security in the increasingly active Indian Ocean region.</p>
-          </div>
-
-          <div class="story">
-            <a class="headline" href="https://timesofindia.indiatimes.com/technology/tech-news/after-running-it-for-43-years-us-family-sells-electrical-company-for-1-7-billion-makes-540-workers-millionaires/articleshow/131889367.cms" target="_blank" rel="noopener">AFTER 43 YRS, US FAMILY SELLS ELECTRICAL FIRM FOR $1.7BN, MAKES 540 WORKERS MILLIONAIRES</a>
-            <p>The owners of Louisiana-based electrical equipment firm Fibrebond have sold the company to Eaton for $1.7 billion, sharing a massive portion of the proceeds with their employees. Former CEO Graham Walker ensured that 15% of the deal's value, totaling $240 million, was distributed directly to the company's 540 full-time workers. This generous move resulted in an average bonus of approximately $443,000 per employee, despite none of them holding official equity.</p>
-          </div>
-
-          <div class="story">
-            <a class="headline" href="https://timesofindia.indiatimes.com/india/big-names-involved-govt-may-fall-arvind-kejriwal-questions-lack-of-cbi-ed-action-in-ram-temple-donation-theft-case/articleshow/131890173.cms" target="_blank" rel="noopener">'BIG NAMES INVOLVED, GOVT MAY FALL': KEJRIWAL ON RAM TEMPLE DONATION 'THEFT' CASE</a>
-            <p>Aam Aadmi Party national convenor Arvind Kejriwal has raised serious concerns regarding the alleged Ram Temple donation theft case, claiming that highly influential individuals are involved. Kejriwal warned that the state government could face collapse if the full details and names of those responsible are brought to light. He also questioned why central agencies like the CBI and ED have not taken swift action despite reports of stolen funds and valuables.</p>
-          </div>
-        </section>
-
-        <section id="upcoming-events-in-india">
-          <h2>Upcoming Events In India <span class="count">5 stories</span></h2>
-          
-            <div class="event">
-              <h3>HOME BARISTAS OF INDIA 2026</h3>
-              <p>Home Baristas of India returns for its third season, bringing together passionate home brewers from across the country to showcase their favorite coffees. The event is scheduled to take place at Nerlu Cafe in Bengaluru, offering a platform for sharing brewing techniques and championing distinct coffee varieties.</p>
-              <a class="more" href="https://urbanaut.app/spot/home-baristas-of-india-2026" target="_blank" rel="noopener">Details &#8599;</a>
-            </div>
-
-            <div class="event">
-              <h3>PRATYUSH CHAUBEY LIVE</h3>
-              <p>Standup comedian and former software engineer Pratyush Chaubey is set to perform a live comedy show at The Comedy Theatre in Hauz Khas Village, New Delhi. Known for his sharp wit and honest, relatable humor about life in Uttar Pradesh, Chaubey promises an entertaining evening of unapologetic laughter.</p>
-              <a class="more" href="https://www.district.in/events/pratyush-chaubey-live-may9-2026-buy-tickets" target="_blank" rel="noopener">Details &#8599;</a>
-            </div>
-
-            <div class="event">
-              <h3>WORLD MUSIC DAY CONCERT 2026</h3>
-              <p>Kolkata will host an exclusive World Music Day concert curated by Sourendro Mullick and Soumyojit Das at the Netaji Indoor Stadium. The landmark event will bring together some of the country's most prominent musical talents for a one-night-only collaborative performance celebrating global music traditions.</p>
-              <a class="more" href="https://www.district.in/events/world-music-day-2026-buy-tickets" target="_blank" rel="noopener">Details &#8599;</a>
-            </div>
-
-            <div class="event">
-              <h3>FOOD TECH SHOW 2026</h3>
-              <p>The CIDCO Exhibition Centre in Vashi, Navi Mumbai, is hosting the Food Tech Show 2026, showcasing the latest innovations, machinery, and equipment in the food processing industry. The exhibition serves as a key B2B platform for food manufacturers, technology suppliers, and industry professionals to network and explore new business ventures.</p>
-              <a class="more" href="https://www.tradeindia.com/tradeshows/136126/food-tech-show-2025.html" target="_blank" rel="noopener">Details &#8599;</a>
-            </div>
-
-            <div class="event">
-              <h3>NILADRI KUMAAR EKKA TOUR 2026 | DELHI</h3>
-              <p>Renowned sitar maestro Niladri Kumaar is bringing his EKKA Tour 2026 to Yashobhoomi Convention Centre in Dwarka, Delhi. Fans can expect an unforgettable live musical performance blending traditional sitar styles with contemporary global sounds.</p>
-              <a class="more" href="https://www.premiertickets.co/event/niladri-kumaar-ekka-tour-2026-delhi/" target="_blank" rel="noopener">Details &#8599;</a>
-            </div>
-        </section>
+    <article class="story">
+      
+      <div class="story-body">
+        <a class="headline" href="https://www.hindustantimes.com/world-news/us-news/nancy-guthrie-update-sheriff-points-out-potential-motive-to-investigation-team-101782046308544.html" target="_blank" rel="noopener">NANCY GUTHRIE DISAPPEARANCE INVESTIGATION POINTS TO WRENCH ATTACK THEORY</a>
+        <p>The ongoing investigation into the disappearance of 84-year-old Nancy Guthrie has turned to a theory that she was targeted in a sophisticated wrench attack. Former FBI agent Jennifer Coffindaffer suggested a "wrench by proxy" theory, noting that Guthrie's Facebook account was modified months after her disappearance. Meanwhile, search efforts in Mexico have uncovered 25 unmarked graves as investigators continue to seek fresh leads.</p>
+      </div>
+    </article></div>
+              </section>
+        </div>
+  
+            <section id="events" class="events-section">
+              <h2>Upcoming Events In India</h2>
+              <p class="empty">No events scheduled this week</p>
+            </section>
   <footer>Generated automatically from RSS feeds &middot; Last updated Sunday, 21 June 2026</footer>
 </div>
+<script>
+  document.querySelectorAll('.cat-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.cat-btn').forEach(function (b) { b.classList.remove('active'); });
+      document.querySelectorAll('.catpanel').forEach(function (p) { p.style.display = 'none'; });
+      btn.classList.add('active');
+      var panel = document.getElementById(btn.dataset.cat);
+      if (panel) panel.style.display = 'block';
+    });
+  });
+</script>
 </body>
 </html>
