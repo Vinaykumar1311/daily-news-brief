@@ -122,10 +122,19 @@
   }
   .outlet-title .count{ color:var(--ink-soft); font-weight:400; letter-spacing:0; text-transform:none; font-size:11.5px; margin-left:auto; }
 
-  .story-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0 32px; }
+  /* ---------- Story grid (magazine / asymmetric) ----------
+     Pattern repeats every 6 cards within an outlet:
+     [feature: full width] [medium x3: one row of 3] [compact x2: one row of 2, text-only] */
+  .story-grid{
+    display:grid;
+    grid-template-columns:repeat(6, 1fr);
+    grid-auto-flow:dense;
+    gap:38px 28px;
+  }
   .story{
     display:block; text-decoration:none; color:inherit;
-    padding:22px 0; border-bottom:1px solid var(--rule); cursor:pointer;
+    padding-bottom:26px; border-bottom:1px solid var(--rule); cursor:pointer;
+    grid-column:span 2;
   }
   .story.no-link{ cursor:default; }
   .story-media{ width:100%; aspect-ratio:16/9.5; overflow:hidden; border-radius:3px; background:var(--rule); margin-bottom:13px; }
@@ -133,10 +142,30 @@
   .story:hover .story-media img{ transform:scale(1.04); }
   .story-headline{
     font-family:'Fraunces', Georgia, serif; font-weight:700; font-optical-sizing:auto;
-    font-size:21px; line-height:1.28; margin:0 0 8px;
+    font-size:20px; line-height:1.28; margin:0 0 8px;
   }
   .story:hover .story-headline{ text-decoration:underline; text-underline-offset:4px; }
   .story-dek{ font-size:14.5px; line-height:1.62; color:var(--ink-soft); margin:0 0 10px; }
+
+  /* size variants */
+  .story--feature{
+    grid-column:span 6;
+    display:flex; gap:30px; align-items:flex-start;
+    padding-bottom:34px;
+  }
+  .story--feature .story-media{ width:44%; flex-shrink:0; aspect-ratio:4/3; margin-bottom:0; }
+  .story--feature .story-body{ flex:1; padding-top:2px; }
+  .story--feature .story-headline{ font-size:clamp(24px, 3vw, 30px); line-height:1.16; }
+  .story--feature .story-dek{ font-size:15.5px; }
+
+  .story--medium{ grid-column:span 2; }
+
+  .story--compact{ grid-column:span 3; }
+  .story--compact .story-headline{ font-size:17px; line-height:1.32; margin-bottom:6px; }
+  .story--compact .story-dek{
+    font-size:13.5px; margin-bottom:8px;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  }
 
   /* ---------- Events ---------- */
   .events-section{ margin-top:60px; border-top:4px double var(--rule-strong); padding-top:30px; }
@@ -158,8 +187,19 @@
   .empty{ font-style:italic; color:var(--ink-soft); font-size:14px; padding:14px 0; }
   footer{ margin-top:64px; text-align:center; font-family:'Inter',sans-serif; font-size:11.5px; color:var(--ink-soft); letter-spacing:0.03em; }
 
+  /* tablet: collapse the 6-col grid to 2 columns, keep the size contrast */
+  @media (max-width:880px) and (min-width:681px){
+    .story-grid{ grid-template-columns:repeat(2, 1fr); }
+    .story--feature{ grid-column:span 2; }
+    .story--medium{ grid-column:span 1; }
+    .story--compact{ grid-column:span 2; }
+  }
+
   @media (max-width:680px){
-    .story-grid{ grid-template-columns:1fr; }
+    .story-grid{ grid-template-columns:1fr; gap:0; }
+    .story, .story--feature, .story--medium, .story--compact{ grid-column:span 1 !important; }
+    .story--feature{ flex-direction:column; gap:13px; }
+    .story--feature .story-media{ width:100%; aspect-ratio:16/9.5; }
     .stamp{ width:58px; height:58px; top:14px; }
     .stamp .d{ font-size:14px; }
     header.masthead{ padding-top:34px; }
@@ -179,167 +219,79 @@
   </header>
   
         <div class="catpanel" id="indian-news" style="display:block">
-          <a class="lead-story" href="https://www.hindustantimes.com/india-news/manipur-kuki-naga-violence-reminiscent-of-1990s-civil-war-101782068451741.html" target="_blank" rel="noopener">
+          <a class="lead-story" href="https://www.hindustantimes.com/india-news/ram-temple-funds-row-ayodhya-sit-likely-to-submit-probe-report-to-cm-adityanath-today-101782088901228.html" target="_blank" rel="noopener">
       
       <div class="lead-body">
         <span class="kicker" style="color:#C2570A">Top Story</span>
-        <h2 class="lead-headline">MANIPUR: KUKI-NAGA VIOLENCE REMINISCENT OF 1990S CIVIL WAR</h2>
-        <p class="lead-dek">Violence between Nagas and Kukis in Manipur has escalated significantly after six Nagas were killed. This sudden rise in conflict has sparked fears of a civil war reminiscent of the devastating ethnic violence in the 1990s. The regional stability is severely threatened as ethnic tensions continue to intensify across the state. Authorities are closely monitoring the developments to prevent further escalation of hostilities. The local populace remains on high alert amid apprehension of renewed clashes.</p>
+        <h2 class="lead-headline">RAM TEMPLE FUNDS ROW: SIT LIKELY TO SUBMIT PROBE REPORT TO CM ADITYANATH TODAY</h2>
+        <p class="lead-dek">The Special Investigation Team investigating the alleged financial irregularities in the Ram temple funds is expected to submit its probe report to Uttar Pradesh Chief Minister Yogi Adityanath. Over the course of a rigorous six-day investigation, the names of approximately 150 suspects have emerged in connection with the row. According to sources familiar with the matter, legal and administrative action is highly likely to be initiated against at least 25 of these individuals. The investigation has drawn significant public and political attention due to the high profile of the temple project. The state government is anticipated to act swiftly once the final report is reviewed by the Chief Minister.</p>
         <span class="read-link" style="color:#C2570A">Read full story &#8594;</span>
       </div></a>
           <nav class="outlet-toc"><a href="#indian-news--hindustan-times">Hindustan Times</a>
 <a href="#indian-news--india-today">India Today</a>
-<a href="#indian-news--aaj-tak">Aaj Tak</a>
 </nav>
           
           <section id="indian-news--hindustan-times" class="outlet-section">
             <h3 class="outlet-title" style="color:#C2570A">Hindustan Times
-              <span class="count">4 stories</span>
+              <span class="count">1 story</span>
             </h3>
-            <div class="story-grid"><a class="story" href="https://www.hindustantimes.com/india-news/govt-re-appoints-mehta-as-sg-for-three-years-asgs-term-extended-101782068333035.html" target="_blank" rel="noopener">
+            <div class="story-grid"><a class="story story--feature" href="https://www.hindustantimes.com/india-news/malayalam-film-actors-body-amma-governing-council-resigns-after-infighting-101782069532852.html" target="_blank" rel="noopener">
       
       <div class="story-body">
-        <h3 class="story-headline">GOVT RE-APPOINTS MEHTA AS SG FOR THREE YEARS, ASGS’ TERM EXTENDED</h3>
-        <p class="story-dek">The Central Government has officially re-appointed Solicitor General Tushar Mehta for a fresh three-year term. Alongside his re-appointment, the government has extended the terms of several additional solicitor generals serving in top courts. This move ensures administrative continuity in the government's legal representation. The official announcement was made following executive clearance from the competent authorities. These law officers play a crucial role in defending government policies in high-stakes cases.</p>
-        <span class="read-link" style="color:#C2570A">Read full story &#8594;</span>
-      </div></a>
-<a class="story" href="https://www.hindustantimes.com/india-news/cbse-begins-release-of-class-12-re-evaluated-results-101782067312695.html" target="_blank" rel="noopener">
-      
-      <div class="story-body">
-        <h3 class="story-headline">CBSE BEGINS RELEASE OF CLASS 12 RE-EVALUATED RESULTS</h3>
-        <p class="story-dek">The Central Board of Secondary Education has started releasing the Class 12 re-evaluated results in a phased manner. Results have been announced for nearly 1.47 lakh students—around 87% of the approximately 1.68 lakh candidates who had applied for verification of marks and re-evaluation after the declaration of board results on May 13. CBSE announced results for nearly 147,000 students—around 87% of the approximately 168,000 candidates who had applied for verification of marks and re-evaluation after the declaration of board results on May 13.</p>
-        <span class="read-link" style="color:#C2570A">Read full story &#8594;</span>
-      </div></a>
-<a class="story" href="https://www.hindustantimes.com/india-news/we-will-go-to-war-pakistan-threatens-india-as-the-country-faces-a-water-crisis-101782082858512.html" target="_blank" rel="noopener">
-      
-      <div class="story-body">
-        <h3 class="story-headline">WE WILL GO TO WAR: PAKISTAN THREATENS INDIA AS WATER CRISIS DEEPENS</h3>
-        <p class="story-dek">Pakistan's Defence Minister Khwaja Asif has issued a military threat against India over the Indus Waters Treaty. This statement comes as Pakistan faces widespread domestic instability and a severe internal water crisis. Experts attribute Pakistan's dry taps and acute water shortage to gross internal mismanagement of resources. Despite these domestic failures, the leadership has chosen to project the blame onto neighboring India. The provocative rhetoric risks escalating cross-border tensions at a highly sensitive time.</p>
-        <span class="read-link" style="color:#C2570A">Read full story &#8594;</span>
-      </div></a>
-<a class="story" href="https://www.hindustantimes.com/india-news/neet-ug-re-exam-held-amid-tight-security-lakhs-retake-test-after-paper-leak-row-101782052097514.html" target="_blank" rel="noopener">
-      
-      <div class="story-body">
-        <h3 class="story-headline">NEET UG RE-EXAMINATION HELD AMID TIGHT SECURITY MEASURES</h3>
-        <p class="story-dek">The National Testing Agency conducted the NEET UG re-examination across 5,440 centers under strict security protocols. Over 2.27 million aspirants were expected to retake the medical entrance test following a major paper leak controversy. The agency deployed over 1.38 lakh CCTV cameras and 51,000 jammers to monitor exam centers and prevent malpractice. Students reported that while the biology section was relatively easy, the physics paper was highly challenging. No fresh paper leaks or major irregularities were reported during the re-test.</p>
+        <h3 class="story-headline">MALAYALAM FILM ACTORS BODY AMMA GOVERNING COUNCIL RESIGNS AFTER INFIGHTING</h3>
+        <p class="story-dek">In a major development for the Malayalam film industry, the governing council of the Association of Malayalam Movie Artists has resigned en masse. The collective resignation includes the body’s first female president, Shwetha Menon, following intense internal conflicts and power struggles. This drastic step was triggered by severe allegations of financial mismanagement and ongoing infighting among the committee members. The mass exit occurred in the wake of a highly contentious annual general body meeting where members moved a formal no-confidence motion against the leadership. The sudden collapse of the governing council has left the prominent industry association in a state of leadership crisis.</p>
         <span class="read-link" style="color:#C2570A">Read full story &#8594;</span>
       </div></a></div>
           </section>
           <section id="indian-news--india-today" class="outlet-section">
             <h3 class="outlet-title" style="color:#C2570A">India Today
-              <span class="count">4 stories</span>
-            </h3>
-            <div class="story-grid"><a class="story" href="https://www.indiatoday.in/magazine/nation/story/20260629-a-leaky-pipeline-jal-jeevan-mission-scam-2929673-2026-06-19?utm_source=rss" target="_blank" rel="noopener">
-      <div class="story-media"><img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202606/subodh-agarwal-193913570-16x9_0.jpg?VersionId=hbalvY3KEhEej6D1gnXuBCv.98HbmRMZ" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
-      <div class="story-body">
-        <h3 class="story-headline">A LEAKY PIPELINE: JAL JEEVAN MISSION SCAM EXPOSED</h3>
-        <p class="story-dek">A major scam has been uncovered in the implementation of the government's flagship Jal Jeevan Mission. The investigation has revealed extensive irregularities and financial mismanagement within the clean drinking water initiative. Contractors and officials reportedly colluded to siphon off public funds meant for rural water infrastructure. The exposure of this "leaky pipeline" has raised serious questions about administrative oversight and accountability. Government agencies are now initiating probes to trace the diverted funds and penalize those involved.</p>
-        <span class="read-link" style="color:#C2570A">Read full story &#8594;</span>
-      </div></a>
-<a class="story" href="https://www.indiatoday.in/magazine/nation/story/20260615-bihar-samrat-gets-going-samrat-choudhary-2922553-2026-06-06?utm_source=rss" target="_blank" rel="noopener">
-      <div class="story-media"><img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202606/samrat-choudhary-060304754-16x9_0.jpg?VersionId=.nOcijG_BFqww2MjR_nnJgclyhkdHl8C" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
-      <div class="story-body">
-        <h3 class="story-headline">BIHAR CM SAMRAT CHOUDHARY GETS GOING WITH SYSTEMIC REFORMS</h3>
-        <p class="story-dek">Bihar Deputy Chief Minister Samrat Choudhary has initiated a series of administrative and developmental reforms in the state. The newly empowered leader is focusing on reviving key sectors including healthcare, education, and public infrastructure. His active governance style has brought a renewed sense of urgency to the state machinery in Patna. Political analysts suggest these swift moves are aimed at consolidating public support ahead of upcoming electoral contests. The government has pledged to prioritize transparency and eliminate corruption across all departments.</p>
-        <span class="read-link" style="color:#C2570A">Read full story &#8594;</span>
-      </div></a>
-<a class="story" href="https://www.indiatoday.in/india/story/india-agriculture-europe-exports-pesticides-chemicals-paraquat-glyphosate-2-4-d-cancer-who-carcinogenic-2929809-2026-06-21?utm_source=rss" target="_blank" rel="noopener">
-      <div class="story-media"><img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202606/the-chemicals-sprayed-on-crops-dont-stay-in-the-fields-they-reach-our-plates-too-ptiunsplash-212018537-16x9_0.jpg?VersionId=o_lmlvHe7ky5ckUnJ0uS9HCCBfodhbfZ" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
-      <div class="story-body">
-        <h3 class="story-headline">CANCER SERVED ON A PLATE: CHEMICALS BANNED IN EUROPE KILLING INDIANS</h3>
-        <p class="story-dek">An alarming investigation has revealed that dangerous agricultural chemicals banned in Europe are still being widely used in India. Pesticides like paraquat, glyphosate, and 2,4-D are actively sprayed on crops, eventually finding their way onto consumer plates. The World Health Organization has classified many of these substances as carcinogenic and hazardous to human health. While European nations have prohibited their usage to protect safety, Indian regulators have lagged in enforcement. The widespread contamination of daily food raises urgent concerns over a brewing national health emergency.</p>
-        <span class="read-link" style="color:#C2570A">Read full story &#8594;</span>
-      </div></a>
-<a class="story" href="https://www.indiatoday.in/science/story/thoothukudi-tornado-tamil-nadu-rare-india-weather-formation-explained-2931171-2026-06-21?utm_source=rss" target="_blank" rel="noopener">
-      <div class="story-media"><img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202606/a-rare-tornado-funnel-reaches-the-ground-over-thoothukudi-in-tamil-nadu-on-june-21-photo-xnavde-211142104-16x9_0.jpg?VersionId=u.e8HglIO8WSu.VkD_Twj_F_wOjCA7zW" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
-      <div class="story-body">
-        <h3 class="story-headline">RARE TORNADO SPINS OVER THOOTHUKUDI IN TAMIL NADU</h3>
-        <p class="story-dek">A rare tornado funnel was captured spinning over Thoothukudi, presenting a sight that Tamil Nadu almost never witnesses. The unusual meteorological event drew significant attention as residents shared videos of the dramatic cloud formation online. Meteorologists explained that specific atmospheric conditions led to this sudden localized weather phenomenon. No major damage or casualties were immediately reported following the rare storm's brief activity. Weather experts are analyzing the event to understand changing climatic patterns in coastal southern India.</p>
-        <span class="read-link" style="color:#C2570A">Read full story &#8594;</span>
-      </div></a></div>
-          </section>
-          <section id="indian-news--aaj-tak" class="outlet-section">
-            <h3 class="outlet-title" style="color:#C2570A">Aaj Tak
               <span class="count">2 stories</span>
             </h3>
-            <div class="story-grid"><a class="story" href="https://www.aajtak.in/india/maharashtra/story/uddhav-thackeray-setback-six-shiv-sena-ubt-mps-join-eknath-shinde-camp-ntc-agkp-rpti-2584414-2026-06-22?utm_source=rss" target="_blank" rel="noopener">
-      <div class="story-media"><img src="https://akm-img-a-in.tosshub.com/aajtak/images/story/202606/6a383222a433f-uddhav-thackeray-214900969-16x9.png" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
+            <div class="story-grid"><a class="story story--feature" href="https://www.indiatoday.in/magazine/nation/story/20260629-a-leaky-pipeline-jal-jeevan-mission-scam-2929673-2026-06-19?utm_source=rss" target="_blank" rel="noopener">
+      <div class="story-media"><img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202606/subodh-agarwal-193913570-16x9_0.jpg?VersionId=hbalvY3KEhEej6D1gnXuBCv.98HbmRMZ" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
       <div class="story-body">
-        <h3 class="story-headline">UDDHAV THACKERAY FACES SETBACK AS REBEL MPS PREPARE TO JOIN SHINDE CAMP</h3>
-        <p class="story-dek">Uddhav Thackeray is facing a major political crisis as six rebel MPs from his faction are expected to officially join Eknath Shinde's Shiv Sena. This potential exodus marks a significant setback for the Sena UBT leader in Maharashtra's ongoing political feud. Devendra Fadnavis described the political maneuver as "Operation Tiger," claiming it has been highly successful. Thackeray expressed regret at a rally, admitting that giving tickets to these individuals was a mistake. The defection dramatically consolidates Chief Minister Eknath Shinde's faction as the primary Shiv Sena.</p>
+        <h3 class="story-headline">A LEAKY PIPELINE | JAL JEEVAN MISSION SCAM</h3>
+        <p class="story-dek">India Today's latest investigation exposes critical gaps and severe irregularities in the implementation of the government’s flagship Jal Jeevan Mission. Dubbed as "a leaky pipeline," the report highlights massive allegations of financial scams and mismanagement plaguing the drinking water project. The investigation points to deep-seated corruption and administrative failures that have compromised the mission's goal of providing safe tap water. The scheme, which was designed to transform rural water access, has instead faced delays and sub-standard execution in several regions. This detailed expose sheds light on how public funds meant for essential infrastructure have been diverted, triggering demands for a thorough probe.</p>
         <span class="read-link" style="color:#C2570A">Read full story &#8594;</span>
       </div></a>
-<a class="story" href="https://www.aajtak.in/bihar/story/indian-cricketer-akash-deep-wedding-tilak-ceremony-rohtas-baddi-village-varanasi-lcln-strc-2584354-2026-06-21?utm_source=rss" target="_blank" rel="noopener">
-      <div class="story-media"><img src="https://akm-img-a-in.tosshub.com/aajtak/images/story/202606/6a382685acbcc-indian-cricketer-akash-deep-215928104-16x9.jpg" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
+<a class="story story--medium" href="https://www.indiatoday.in/india/story/all-6-rebel-sena-ubt-mps-to-join-eknath-shindes-shiv-sena-at-3-pm-tomorrow-say-sources-2931324-2026-06-21?utm_source=rss" target="_blank" rel="noopener">
+      <div class="story-media"><img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202606/maharashtra-dy-cm-eknath-shinde-shiv-sena-ubt-leader-uddhav-thackeray-215255855-16x9_0.jpg?VersionId=ohb8MxNkwd_itn6UUAEzlARDGiQYlPpZ" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
       <div class="story-body">
-        <h3 class="story-headline">TILAK CEREMONY OF INDIAN CRICKETER AKASH DEEP HELD IN ROHTAS</h3>
-        <p class="story-dek">The wedding festivities of Indian cricketer Akash Deep have officially begun with his Tilak ceremony in Rohtas. His native Baddi village was beautifully decorated to celebrate the special occasion. Local residents and family members gathered in large numbers to participate in the traditional rituals. Akash Deep, who has represented India on the international stage, received warm wishes from the community. The entire village wore a festive look as the high-profile wedding events commenced.</p>
+        <h3 class="story-headline">ALL SIX REBEL SENA UBT MPs TO JOIN SHINDE'S SHIV SENA TODAY AT 3 PM</h3>
+        <p class="story-dek">The political landscape of Maharashtra is witnessing another massive shift as all six rebel MPs from the Uddhav Thackeray-led Shiv Sena (UBT) faction are set to formally join Chief Minister Eknath Shinde’s Shiv Sena. Sources confirm that the crossover is scheduled to take place today, dealing a severe blow to Thackeray’s party. This defection follows a period of intense speculation and growing resentment among the MPs over a perceived lack of leadership and developmental funds. Senior BJP leader Devendra Fadnavis remarked on the situation, declaring that "Operation Tiger" has been highly successful. This move further consolidates Shinde’s faction as the primary and recognized Shiv Sena in the state.</p>
         <span class="read-link" style="color:#C2570A">Read full story &#8594;</span>
       </div></a></div>
           </section>
         </div>
         <div class="catpanel" id="world-news" style="display:none">
-          <a class="lead-story" href="https://www.hindustantimes.com/world-news/us-news/savannah-guthries-emotional-fathers-day-tribute-for-husband-michael-feldman-amid-key-role-in-mother-search-101782084967982.html" target="_blank" rel="noopener">
+          <a class="lead-story" href="https://www.hindustantimes.com/world-news/us-news/is-claude-ai-down-api-529-overloaded-errors-hit-coding-tasks-and-claude-code-101782088928197.html" target="_blank" rel="noopener">
       
       <div class="lead-body">
         <span class="kicker" style="color:#1F4B5F">Top Story</span>
-        <h2 class="lead-headline">SAVANNAH GUTHRIE'S EMOTIONAL FATHER'S DAY TRIBUTE TO MICHAEL FELDMAN</h2>
-        <p class="lead-dek">TODAY show co-host Savannah Guthrie praised her husband Michael Feldman on Father's Day with a heartfelt public tribute. Guthrie expressed deep gratitude for Feldman's unwavering support during an incredibly challenging period for their family. Her husband played a pivotal role in assisting the family amid the search for her kidnapped mother, Nancy Guthrie. The emotional message resonated with fans, who offered their support and admiration for the family's resilience. The search for the missing 84-year-old matriarch continues to be a major priority for investigators.</p>
+        <h2 class="lead-headline">IS CLAUDE AI DOWN? API 529 OVERLOADED ERRORS HIT CODING TASKS AND CLAUDE CODE</h2>
+        <p class="lead-dek">Anthropic's Claude AI is reportedly experiencing major technical disruptions, leaving numerous developers and programmers frustrated. Users worldwide have reported receiving persistent API 529 "Overloaded" errors, which have brought critical coding tasks to a standstill. The outage has particularly impacted Claude Code and other integrated developer tools that rely heavily on the platform's API stability. This widespread technical hitch comes at a time when reliance on AI coding assistants is at an all-time high in the tech industry. While Anthropic has previously addressed performance concerns, the current downtime has sparked discussions about the reliability of cloud-based AI infrastructure. Developers are eagerly awaiting an official resolution and system status update from the company.</p>
         <span class="read-link" style="color:#1F4B5F">Read full story &#8594;</span>
       </div></a>
           <nav class="outlet-toc"><a href="#world-news--hindustan-times">Hindustan Times</a>
 <a href="#world-news--india-today">India Today</a>
 </nav>
           
-          <section id="world-news--hindustan-times" class="outlet-section">
-            <h3 class="outlet-title" style="color:#1F4B5F">Hindustan Times
-              <span class="count">3 stories</span>
-            </h3>
-            <div class="story-grid"><a class="story" href="https://www.hindustantimes.com/world-news/us-news/newton-tornado-video-shows-massive-twister-on-ground-in-jasper-county-illinois-willow-hill-hutsonville-on-alert-101782077551256.html" target="_blank" rel="noopener">
-      
-      <div class="story-body">
-        <h3 class="story-headline">MASSIVE TORNADO REPORTED ON THE GROUND IN JASPER COUNTY, ILLINOIS</h3>
-        <p class="story-dek">A massive twister was reported on the ground near Newton in Jasper County on Sunday afternoon. The tornado formed as severe storms tore across eastern Illinois, triggering active weather warnings. Nearby communities, including Willow Hill and Hutsonville, were placed on high alert as the storm system advanced. Local residents captured dramatic video footage of the large funnel cloud churning up debris. Authorities urged the public to seek immediate shelter and monitor official weather channels for safety updates.</p>
-        <span class="read-link" style="color:#1F4B5F">Read full story &#8594;</span>
-      </div></a>
-<a class="story" href="https://www.hindustantimes.com/world-news/qatar-factory-explosion-videos-show-blast-at-ras-laffan-industrial-area-near-doha-101782075443887.html" target="_blank" rel="noopener">
-      
-      <div class="story-body">
-        <h3 class="story-headline">TECHNICAL MALFUNCTION TRIGGERED FACTORY EXPLOSION IN QATAR</h3>
-        <p class="story-dek">An explosion caused by a technical malfunction hit a factory in Qatar's Ras Laffan Industrial Area on Sunday. Dramatic videos surfaced on social media showing a powerful blast near the city of Doha. Emergency response teams rushed to the industrial complex to contain the resulting fire and assess the situation. Ras Laffan is a critical hub for Qatar's petrochemical and industrial operations. Authorities are currently investigating the precise nature of the technical failure that led to the incident.</p>
-        <span class="read-link" style="color:#1F4B5F">Read full story &#8594;</span>
-      </div></a>
-<a class="story" href="https://www.hindustantimes.com/world-news/claude-guillemot-dies-in-plane-crash-cessna-421-in-france-maker-of-assassins-creed-founder-ubisoft-101782011839764.html" target="_blank" rel="noopener">
-      
-      <div class="story-body">
-        <h3 class="story-headline">CLAUDE GUILLEMOT, UBISOFT CO-FOUNDER, DIES IN PLANE CRASH IN FRANCE</h3>
-        <p class="story-dek">Claude Guillemot, the co-founder of the legendary video game developer Ubisoft, has tragically passed away. Guillemot died in a plane crash involving a Cessna 421 aircraft on the Atlantic coast of France. The tragic incident occurred on Friday evening near the La Baule airport. Guillemot was widely respected for his pioneering role in creating Ubisoft, the maker of the globally popular Assassin's Creed franchise. Tributes have poured in from the global gaming community mourning the loss of the visionary tech entrepreneur.</p>
-        <span class="read-link" style="color:#1F4B5F">Read full story &#8594;</span>
-      </div></a></div>
-          </section>
           <section id="world-news--india-today" class="outlet-section">
             <h3 class="outlet-title" style="color:#1F4B5F">India Today
-              <span class="count">3 stories</span>
+              <span class="count">2 stories</span>
             </h3>
-            <div class="story-grid"><a class="story" href="https://www.indiatoday.in/world/story/iran-skips-photo-op-walks-out-of-venue-after-trump-threatens-to-attack-again-2931310-2026-06-21?utm_source=rss" target="_blank" rel="noopener">
-      <div class="story-media"><img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202606/iran-us-talks-211049581-16x9_0.png?VersionId=LpFe5poJDl_yLz.S7nmDu.Acog77Jkuc" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
+            <div class="story-grid"><a class="story story--feature" href="https://www.indiatoday.in/world/story/iran-says-first-round-of-talks-paused-not-ended-after-trump-remarks-spark-walkout-2931347-2026-06-22?utm_source=rss" target="_blank" rel="noopener">
+      <div class="story-media"><img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202606/jd-vance-arrives-in-switzerland-for-us-iran-peace-talks-215711133-16x9_2.jpeg?VersionId=.RMjZQXQn4CMAfu9a_pG7A7QSeEKwKGl" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
       <div class="story-body">
-        <h3 class="story-headline">IRANIAN DELEGATION WALKS OUT OF SWITZERLAND TALKS AFTER TRUMP'S NEW THREATS</h3>
-        <p class="story-dek">The highly anticipated US-Iran peace talks in Switzerland hit a major roadblock on Sunday. The Iranian delegation refused to return to the venue and skipped a scheduled photo-op following fresh threats from President Donald Trump. Trump reportedly warned the delegation over Iran's closure of the strategic Strait of Hormuz. Despite the walkout, Qatari and Pakistani mediators continued to exchange messages between the two sides. Iran's chief negotiator warned Trump to be careful with his words, emphasizing that talks cannot proceed under coercion.</p>
+        <h3 class="story-headline">IRAN SAYS 1ST ROUND OF TALKS PAUSED, NOT ENDED AFTER TRUMP REMARKS SPARK WALKOUT</h3>
+        <p class="story-dek">The historic peace talks between the United States and Iran in Switzerland have hit a major roadblock following controversial remarks by US President Donald Trump. In response to Trump's fresh military threats and warnings of Strait of Hormuz closures, the Iranian delegation staged a dramatic walkout from the venue. Despite the tension, Iranian officials clarified that the first round of talks has been temporarily paused rather than completely terminated. US negotiator JD Vance and Qatari-Pakistani mediators are working behind the scenes to keep the communication channels open. The diplomatic impasse highlights the fragile nature of the negotiations, which aim to address nuclear inspections, oil sales, and regional ceasefires. Both nations remain under intense international pressure as the 60-day negotiation window hangs in the balance.</p>
         <span class="read-link" style="color:#1F4B5F">Read full story &#8594;</span>
       </div></a>
-<a class="story" href="https://www.indiatoday.in/sports/football/story/spain-vs-saudi-arabia-lamine-yamal-fifa-world-cup-match-report-mikel-oyarzabal-2931332-2026-06-21?utm_source=rss" target="_blank" rel="noopener">
-      <div class="story-media"><img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202606/lamine-yamal-212132724-16x9_0.jpg?VersionId=2mBJTybtoxH.yeCxuKQDuZwXXOUu1Msv" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
+<a class="story story--medium" href="https://www.indiatoday.in/technology/news/story/claude-guillemot-assassins-creed-maker-ubisofts-co-founder-dies-in-plane-crash-in-france-2931357-2026-06-22?utm_source=rss" target="_blank" rel="noopener">
+      <div class="story-media"><img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202606/claude-guillemot-215834748-16x9_0.jpg?VersionId=TOW4fO7wcAx92zlXx_TZ.uwH5btCmwrF" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
       <div class="story-body">
-        <h3 class="story-headline">SPANISH FOOTBALL SENSATION LAMINE YAMAL SHINES IN SAUDI ARABIA ROUT</h3>
-        <p class="story-dek">Spain's rising football star Lamine Yamal delivered a masterclass performance as his side roared back to life in the FIFA World Cup. Yamal stole the show during Spain's dominant rout of Saudi Arabia, earning widespread praise from fans and analysts. The impressive victory revived Spain's campaign, demonstrating the team's immense depth and attacking prowess. Along with Yamal, Mikel Oyarzabal made key contributions to secure the decisive win. The young winger's dazzling skills continue to establish him as one of the most exciting talents in world football.</p>
-        <span class="read-link" style="color:#1F4B5F">Read full story &#8594;</span>
-      </div></a>
-<a class="story" href="https://www.indiatoday.in/world/story/brexit-10-years-later-uk-economy-politics-migration-eu-debate-ptag-2931264-2026-06-21?utm_source=rss" target="_blank" rel="noopener">
-      <div class="story-media"><img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202606/pti-international-1-original_46-sixteen_nine.png?VersionId=AoxUWakuGgQ7qZUt_CM2DhcezKFN1B9C" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
-      <div class="story-body">
-        <h3 class="story-headline">A DECADE AFTER BREXIT: ECONOMIC AND POLITICAL SHOCKS PERSIST IN BRITAIN</h3>
-        <p class="story-dek">Ten years after the historic Brexit vote, its profound economic and political aftershocks continue to haunt Britain. The decision to exit the European Union has led to persistent debate over migration, trade, and economic growth. Analysts point out that the political landscape remains highly fractured, with successive administrations struggling to navigate the post-Brexit reality. Public sentiment has shifted, with many citizens feeling the country has changed for the worse in numerous small ways. The ongoing struggles highlight the long-term complexity of decoupling from the European bloc.</p>
+        <h3 class="story-headline">CLAUDE GUILLEMOT, ASSASSIN'S CREED MAKER UBISOFT'S CO-FOUNDER, DIES IN PLANE CRASH IN FRANCE</h3>
+        <p class="story-dek">Claude Guillemot, the prominent co-founder of the global video game giant Ubisoft, has tragically passed away in a plane crash. The fatal accident occurred on Friday evening near the La Baule airport on the Atlantic coast of France. Guillemot, who was piloting a Cessna 421, was a key figure in establishing the company behind legendary gaming franchises like Assassin's Creed. His sudden demise has sent shockwaves through the global interactive entertainment and technology industries. Tributes have poured in from colleagues, developers, and fans honoring his massive contributions to the evolution of modern gaming. Authorities in France have launched a formal investigation to determine the exact cause of the aviation tragedy.</p>
         <span class="read-link" style="color:#1F4B5F">Read full story &#8594;</span>
       </div></a></div>
           </section>
@@ -352,7 +304,7 @@
       <div class="event-media"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ6ELGEa-Sl9DsIAkFrqeAUrHdGeLY9h4RMdpNRumztQ&amp;s=10" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
       <div class="event-body">
         <h3>HOME BARISTAS OF INDIA 2026</h3>
-        <p>Home Baristas of India returns for Season 3, bringing together some of the country’s most passionate home brewers and the coffees they’ve chosen to champion. The event is scheduled to take place at Nerlu Cafe in Bengaluru.</p>
+        <p>The highly anticipated Home Baristas of India returns for its exciting third season, bringing together the country's most passionate home brewers. Hosted at Nerlu Cafe in Bengaluru, the event showcases unique specialty coffees championed by amateur baristas. Attendees can witness live brewing demonstrations and engage in interactive tasting sessions.</p>
         <a class="more" href="https://urbanaut.app/spot/home-baristas-of-india-2026" target="_blank" rel="noopener">Event details &#8599;</a>
       </div>
     </div>
@@ -361,17 +313,8 @@
       <div class="event-media"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkgvo5qxw4mw8v_TqWMF1wT9PPT4rrC7HVZv-UMZpvzICei7RkF4Vg0uv3pw&amp;s=10" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
       <div class="event-body">
         <h3>YAMIL @ THANKS &amp; BEYOND</h3>
-        <p>Find tickets for Yamil at Thanks &amp; Beyond in New Delhi on June 27, 2026. This exciting electronic music event will start at 12:00 AM at the Nehru Place venue.</p>
+        <p>Electronic music lovers in New Delhi can look forward to a captivating live performance by artist Yamil. The event is scheduled to take place at the popular venue Thanks &amp; Beyond. Tickets are available for purchase online to secure a spot for this premier musical experience.</p>
         <a class="more" href="https://open.spotify.com/concert/4br7ZcvRT5jXziN63s1ckV" target="_blank" rel="noopener">Event details &#8599;</a>
-      </div>
-    </div>
-
-    <div class="event">
-      <div class="event-media"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjQAxlccsZqI0jS1ySq0z5LpBmR8-n1ijmAaYaT1ctRVN6pbiVPzncDAfvbA&amp;s=10" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
-      <div class="event-body">
-        <h3>INDIA WAREHOUSING SHOW</h3>
-        <p>The India Warehousing Show is scheduled to take place from June 25 to June 27, 2026. Over 5,000 sponsors and attendees are predicted to gather at the Yashobhoomi Convention Centre in Delhi.</p>
-        <a class="more" href="https://vendelux.com/app/event/india-warehousing-show-2026/d62b9a9d-1692-44a8-bcd1-b64fc5b068cd" target="_blank" rel="noopener">Event details &#8599;</a>
       </div>
     </div>
 
@@ -379,26 +322,8 @@
       <div class="event-media"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRH6BF9AgZBAj4O0FE2vfzLL46iaXXwZ-R8lHMEHSUeCg&amp;s=10" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
       <div class="event-body">
         <h3>SPOILER ALERT - A STANDUP COMEDY SOLO BY ANSHU MOR</h3>
-        <p>Catch Anshu Mor performing his stand-up comedy solo show, "Spoiler Alert," live in Gurugram. The event will be hosted at The Laugh Store in DLF Cyberhub on June 27, 2026.</p>
+        <p>Renowned comedian Anshu Mor is set to perform his hilarious new solo stand-up comedy show, "Spoiler Alert." The live performance will be held at The Laugh Store inside DLF Cyberhub in Gurugram. Fans can expect an evening filled with sharp observational humor and engaging storytelling.</p>
         <a class="more" href="https://www.stubhub.com/nz/anshu-mor-gurugram-tickets-6-27-2026/event/160949429/" target="_blank" rel="noopener">Event details &#8599;</a>
-      </div>
-    </div>
-
-    <div class="event">
-      <div class="event-media"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRcPhxoSN7SHQbTvEY1kFN70FfvpA-trluMPoLXX3lVH3Lsnu1FB8_DffpQA&amp;s=10" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
-      <div class="event-body">
-        <h3>THE HILL WATERFALL - NIGHT EXPERIENCE</h3>
-        <p>Experience "The Hill Waterfall - Night Experience" in Raysan, Gandhinagar. This unique banquet and water park event will run throughout the month of June.</p>
-        <a class="more" href="https://www.endlessevent.com/events/the-hill-waterfall-night-experience-event-in-raysan-gujarat-india`" target="_blank" rel="noopener">Event details &#8599;</a>
-      </div>
-    </div>
-
-    <div class="event">
-      <div class="event-media"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjouaJ35arxsrNG-l1Peg6P61vvaE0DhSrSLIuBEpGaQ&amp;s" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
-      <div class="event-body">
-        <h3>YOUTURN</h3>
-        <p>Rock band YouTurn is set to deliver an energetic live performance at The Piano Man Gurugram on June 27, 2026. The show will feature a blend of classic rock covers and original songs.</p>
-        <a class="more" href="https://www.facebook.com/events/the-piano-man-32nd-avenue-122002/youturn/1006325595181870/" target="_blank" rel="noopener">Event details &#8599;</a>
       </div>
     </div></div>
             </section>
