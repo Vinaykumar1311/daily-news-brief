@@ -122,19 +122,10 @@
   }
   .outlet-title .count{ color:var(--ink-soft); font-weight:400; letter-spacing:0; text-transform:none; font-size:11.5px; margin-left:auto; }
 
-  /* ---------- Story grid (magazine / asymmetric) ----------
-     Pattern repeats every 6 cards within an outlet:
-     [feature: full width] [medium x3: one row of 3] [compact x2: one row of 2, text-only] */
-  .story-grid{
-    display:grid;
-    grid-template-columns:repeat(6, 1fr);
-    grid-auto-flow:dense;
-    gap:38px 28px;
-  }
+  .story-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0 32px; }
   .story{
     display:block; text-decoration:none; color:inherit;
-    padding-bottom:26px; border-bottom:1px solid var(--rule); cursor:pointer;
-    grid-column:span 2;
+    padding:22px 0; border-bottom:1px solid var(--rule); cursor:pointer;
   }
   .story.no-link{ cursor:default; }
   .story-media{ width:100%; aspect-ratio:16/9.5; overflow:hidden; border-radius:3px; background:var(--rule); margin-bottom:13px; }
@@ -142,30 +133,10 @@
   .story:hover .story-media img{ transform:scale(1.04); }
   .story-headline{
     font-family:'Fraunces', Georgia, serif; font-weight:700; font-optical-sizing:auto;
-    font-size:20px; line-height:1.28; margin:0 0 8px;
+    font-size:21px; line-height:1.28; margin:0 0 8px;
   }
   .story:hover .story-headline{ text-decoration:underline; text-underline-offset:4px; }
   .story-dek{ font-size:14.5px; line-height:1.62; color:var(--ink-soft); margin:0 0 10px; }
-
-  /* size variants */
-  .story--feature{
-    grid-column:span 6;
-    display:flex; gap:30px; align-items:flex-start;
-    padding-bottom:34px;
-  }
-  .story--feature .story-media{ width:44%; flex-shrink:0; aspect-ratio:4/3; margin-bottom:0; }
-  .story--feature .story-body{ flex:1; padding-top:2px; }
-  .story--feature .story-headline{ font-size:clamp(24px, 3vw, 30px); line-height:1.16; }
-  .story--feature .story-dek{ font-size:15.5px; }
-
-  .story--medium{ grid-column:span 2; }
-
-  .story--compact{ grid-column:span 3; }
-  .story--compact .story-headline{ font-size:17px; line-height:1.32; margin-bottom:6px; }
-  .story--compact .story-dek{
-    font-size:13.5px; margin-bottom:8px;
-    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
-  }
 
   /* ---------- Events ---------- */
   .events-section{ margin-top:60px; border-top:4px double var(--rule-strong); padding-top:30px; }
@@ -187,19 +158,8 @@
   .empty{ font-style:italic; color:var(--ink-soft); font-size:14px; padding:14px 0; }
   footer{ margin-top:64px; text-align:center; font-family:'Inter',sans-serif; font-size:11.5px; color:var(--ink-soft); letter-spacing:0.03em; }
 
-  /* tablet: collapse the 6-col grid to 2 columns, keep the size contrast */
-  @media (max-width:880px) and (min-width:681px){
-    .story-grid{ grid-template-columns:repeat(2, 1fr); }
-    .story--feature{ grid-column:span 2; }
-    .story--medium{ grid-column:span 1; }
-    .story--compact{ grid-column:span 2; }
-  }
-
   @media (max-width:680px){
-    .story-grid{ grid-template-columns:1fr; gap:0; }
-    .story, .story--feature, .story--medium, .story--compact{ grid-column:span 1 !important; }
-    .story--feature{ flex-direction:column; gap:13px; }
-    .story--feature .story-media{ width:100%; aspect-ratio:16/9.5; }
+    .story-grid{ grid-template-columns:1fr; }
     .stamp{ width:58px; height:58px; top:14px; }
     .stamp .d{ font-size:14px; }
     header.masthead{ padding-top:34px; }
@@ -235,7 +195,7 @@
             <h3 class="outlet-title" style="color:#C2570A">Hindustan Times
               <span class="count">1 story</span>
             </h3>
-            <div class="story-grid"><a class="story story--feature" href="https://www.hindustantimes.com/india-news/malayalam-film-actors-body-amma-governing-council-resigns-after-infighting-101782069532852.html" target="_blank" rel="noopener">
+            <div class="story-grid"><a class="story" href="https://www.hindustantimes.com/india-news/malayalam-film-actors-body-amma-governing-council-resigns-after-infighting-101782069532852.html" target="_blank" rel="noopener">
       
       <div class="story-body">
         <h3 class="story-headline">MALAYALAM FILM ACTORS BODY AMMA GOVERNING COUNCIL RESIGNS AFTER INFIGHTING</h3>
@@ -247,14 +207,14 @@
             <h3 class="outlet-title" style="color:#C2570A">India Today
               <span class="count">2 stories</span>
             </h3>
-            <div class="story-grid"><a class="story story--feature" href="https://www.indiatoday.in/magazine/nation/story/20260629-a-leaky-pipeline-jal-jeevan-mission-scam-2929673-2026-06-19?utm_source=rss" target="_blank" rel="noopener">
+            <div class="story-grid"><a class="story" href="https://www.indiatoday.in/magazine/nation/story/20260629-a-leaky-pipeline-jal-jeevan-mission-scam-2929673-2026-06-19?utm_source=rss" target="_blank" rel="noopener">
       <div class="story-media"><img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202606/subodh-agarwal-193913570-16x9_0.jpg?VersionId=hbalvY3KEhEej6D1gnXuBCv.98HbmRMZ" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
       <div class="story-body">
         <h3 class="story-headline">A LEAKY PIPELINE | JAL JEEVAN MISSION SCAM</h3>
         <p class="story-dek">India Today's latest investigation exposes critical gaps and severe irregularities in the implementation of the government’s flagship Jal Jeevan Mission. Dubbed as "a leaky pipeline," the report highlights massive allegations of financial scams and mismanagement plaguing the drinking water project. The investigation points to deep-seated corruption and administrative failures that have compromised the mission's goal of providing safe tap water. The scheme, which was designed to transform rural water access, has instead faced delays and sub-standard execution in several regions. This detailed expose sheds light on how public funds meant for essential infrastructure have been diverted, triggering demands for a thorough probe.</p>
         <span class="read-link" style="color:#C2570A">Read full story &#8594;</span>
       </div></a>
-<a class="story story--medium" href="https://www.indiatoday.in/india/story/all-6-rebel-sena-ubt-mps-to-join-eknath-shindes-shiv-sena-at-3-pm-tomorrow-say-sources-2931324-2026-06-21?utm_source=rss" target="_blank" rel="noopener">
+<a class="story" href="https://www.indiatoday.in/india/story/all-6-rebel-sena-ubt-mps-to-join-eknath-shindes-shiv-sena-at-3-pm-tomorrow-say-sources-2931324-2026-06-21?utm_source=rss" target="_blank" rel="noopener">
       <div class="story-media"><img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202606/maharashtra-dy-cm-eknath-shinde-shiv-sena-ubt-leader-uddhav-thackeray-215255855-16x9_0.jpg?VersionId=ohb8MxNkwd_itn6UUAEzlARDGiQYlPpZ" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
       <div class="story-body">
         <h3 class="story-headline">ALL SIX REBEL SENA UBT MPs TO JOIN SHINDE'S SHIV SENA TODAY AT 3 PM</h3>
@@ -280,14 +240,14 @@
             <h3 class="outlet-title" style="color:#1F4B5F">India Today
               <span class="count">2 stories</span>
             </h3>
-            <div class="story-grid"><a class="story story--feature" href="https://www.indiatoday.in/world/story/iran-says-first-round-of-talks-paused-not-ended-after-trump-remarks-spark-walkout-2931347-2026-06-22?utm_source=rss" target="_blank" rel="noopener">
+            <div class="story-grid"><a class="story" href="https://www.indiatoday.in/world/story/iran-says-first-round-of-talks-paused-not-ended-after-trump-remarks-spark-walkout-2931347-2026-06-22?utm_source=rss" target="_blank" rel="noopener">
       <div class="story-media"><img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202606/jd-vance-arrives-in-switzerland-for-us-iran-peace-talks-215711133-16x9_2.jpeg?VersionId=.RMjZQXQn4CMAfu9a_pG7A7QSeEKwKGl" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
       <div class="story-body">
         <h3 class="story-headline">IRAN SAYS 1ST ROUND OF TALKS PAUSED, NOT ENDED AFTER TRUMP REMARKS SPARK WALKOUT</h3>
         <p class="story-dek">The historic peace talks between the United States and Iran in Switzerland have hit a major roadblock following controversial remarks by US President Donald Trump. In response to Trump's fresh military threats and warnings of Strait of Hormuz closures, the Iranian delegation staged a dramatic walkout from the venue. Despite the tension, Iranian officials clarified that the first round of talks has been temporarily paused rather than completely terminated. US negotiator JD Vance and Qatari-Pakistani mediators are working behind the scenes to keep the communication channels open. The diplomatic impasse highlights the fragile nature of the negotiations, which aim to address nuclear inspections, oil sales, and regional ceasefires. Both nations remain under intense international pressure as the 60-day negotiation window hangs in the balance.</p>
         <span class="read-link" style="color:#1F4B5F">Read full story &#8594;</span>
       </div></a>
-<a class="story story--medium" href="https://www.indiatoday.in/technology/news/story/claude-guillemot-assassins-creed-maker-ubisofts-co-founder-dies-in-plane-crash-in-france-2931357-2026-06-22?utm_source=rss" target="_blank" rel="noopener">
+<a class="story" href="https://www.indiatoday.in/technology/news/story/claude-guillemot-assassins-creed-maker-ubisofts-co-founder-dies-in-plane-crash-in-france-2931357-2026-06-22?utm_source=rss" target="_blank" rel="noopener">
       <div class="story-media"><img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202606/claude-guillemot-215834748-16x9_0.jpg?VersionId=TOW4fO7wcAx92zlXx_TZ.uwH5btCmwrF" alt="" loading="lazy" onerror="this.parentElement.remove();"></div>
       <div class="story-body">
         <h3 class="story-headline">CLAUDE GUILLEMOT, ASSASSIN'S CREED MAKER UBISOFT'S CO-FOUNDER, DIES IN PLANE CRASH IN FRANCE</h3>
