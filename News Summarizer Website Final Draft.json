@@ -1,0 +1,513 @@
+{
+  "name": "News Summarizer Website Final Draft",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 6
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -720,
+        1088
+      ],
+      "id": "cf4a1811-05ed-4f87-8261-199b191a9384",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://www.hindustantimes.com/feeds/rss/world-news/rssfeed.xml",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -496,
+        512
+      ],
+      "id": "b813f568-f6d6-4fb5-9b90-c4908c91e3fb",
+      "name": "World News Hindustantimes"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        1088
+      ],
+      "id": "826d013b-276d-4450-9dcd-ba831ec60ecb",
+      "name": "Aata Aggregator"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.data }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are an AI news summarizer.\n\nYou will receive a JSON array of items. Most items are news articles with fields like: title, link, pubDate, content, contentSnippet, and possibly an image field (enclosure, image, thumbnail, mediaContent, or similar). A few items near the end may be event listings instead (fields like date, address, venue, description) rather than news articles.\n\nUse ONLY the provided items. Do not invent content, headlines, links, images, or events.\n\nSTEP 1 — CLASSIFY EACH NEWS ARTICLE AS \"INDIAN NEWS\" OR \"WORLD NEWS\":\n\n\nLook at the item's \"link\" URL path and its content/contentSnippet.\nIf the URL path contains segments like /india/, /city/, /cities/, or the story is primarily about Indian politics, economy, or society → classify as INDIAN NEWS.\nIf the URL path contains segments like /world/, /international/, /us/, /uk/, /pakistan/, /china/, etc., or the story is primarily about events outside India → classify as WORLD NEWS.\nIf genuinely ambiguous, default to INDIAN NEWS.\n\n\nSTEP 2 — GROUP BY OUTLET (PUBLICATION) WITHIN EACH OF THE TWO CATEGORIES ABOVE:\n\n\nDetermine the outlet from the domain in each item's \"link\" field.\nKnown mappings: hindustantimes.com → Hindustan Times | timesofindia.indiatimes.com → Times of India | thehindu.com → The Hindu | indiatoday.in → India Today\nIf you see a domain not listed above, create a clean readable outlet name from it (e.g. examplenews.com → Example News).\nIf multiple items are clearly the same story duplicated across feeds, include it only once, under whichever outlet/category fits best.\nList outlets in the order their items first appear in the data, within each category.\n\n\nSTEP 3 — IMAGES:\n\n\nIf an item has an image URL (from fields such as enclosure, image, thumbnail, mediaContent, or similar), include it on an Image line.\nIf no image is available for an item, simply omit the Image line for that item — never write a placeholder.\n\n\nCRITICAL LINK RULE: For every item, copy the exact value from that item's \"link\" field onto the Link line. Never write a placeholder like \"<paste link>\" — always the real URL.\n\nCRITICAL IMAGE RULE: Only output an Image line if a real image URL exists for that item. Never invent or guess an image URL.\n\nFORMAT (structural example only — never reuse this sample text):\n\nHi there, Here's your Daily Brief:\n\nINDIAN NEWS\n\nHINDUSTAN TIMES\n\nHEADLINE IN ALL CAPS\nSummary in 5-6 sentences.\nImage: https://www.hindustantimes.com/some-real-image.jpg\nLink: https://www.hindustantimes.com/the-real-article-url\n\n(repeat for each item from that outlet)\n\nTIMES OF INDIA\n\nHEADLINE IN ALL CAPS\nSummary in 5-6 sentences.\nLink: https://timesofindia.indiatimes.com/the-real-article-url\n\n(repeat for each outlet found within INDIAN NEWS — same format, outlet name in ALL CAPS followed by a line of exactly \"------------------------\")\n\nWORLD NEWS\n\nTHE HINDU\n\nHEADLINE IN ALL CAPS\nSummary in 5-6 sentences.\nImage: https://www.thehindu.com/some-real-image.jpg\nLink: https://www.thehindu.com/the-real-article-url\n\n(repeat for each outlet found within WORLD NEWS — same format)\n\nUPCOMING EVENTS IN INDIA\n\nIf no events found, output exactly: No events scheduled this week\nOtherwise, for each event:\nHEADLINE IN ALL CAPS\nSummary in 2-4 sentences.\nImage: https://the-real-event-image-url (only if available)\nLink: https://the-real-event-url\ni need at least 4-5 news headlines and its summery from each news papers like 4-5 from Hindustantimes papers and 4-5 news from indiatoday paper for both World news and Indian news \nI want all the news in English Language only \nAlways put the headline on its own line, the summary on the next line(s), the optional Image line after the summary, and the Link line directly after — never a placeholder. The category headers (INDIAN NEWS, WORLD NEWS, UPCOMING EVENTS IN INDIA) must be underlined with exactly \"========================\" (24 equals signs). The outlet headers nested within INDIAN NEWS and WORLD NEWS must be underlined with exactly \"------------------------\" (24 hyphens). The \"Upcoming Events in India\" section must always come last and must NOT be split by outlet.\n\nKeep it professional, concise, and easy to read."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        176,
+        1088
+      ],
+      "id": "1e8ca1d7-a394-4d54-b790-93962ba2f475",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        256,
+        1312
+      ],
+      "id": "98cf5fdd-3f91-4602-a672-af2433ff53e1",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "tOgro6lmLAJiSSGx",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 7
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -272,
+        1008
+      ],
+      "id": "5507ca68-cf88-40c0-af4a-aa20144cb633",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "url": "https://serpapi.com/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "engine",
+              "value": "google_events"
+            },
+            {
+              "name": "q",
+              "value": "Events in India"
+            },
+            {
+              "name": "hl",
+              "value": "en"
+            },
+            {
+              "name": "gl",
+              "value": "us"
+            },
+            {
+              "name": "api_key",
+              "value": "958fe7fd99e9bfb73cf24bd0cc94af2c4e5650fc61f2b30cd24d27661dc4364c"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -496,
+        1664
+      ],
+      "id": "da23123b-cc28-487c-b5f4-3d86f0e32088",
+      "name": "Fetch Events"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ---- Helpers (parsing logic unchanged — it already works) ----\nfunction escapeHtml(str) {\n  return String(str)\n    .replace(/&/g, '&amp;')\n    .replace(/</g, '&lt;')\n    .replace(/>/g, '&gt;');\n}\n\nfunction toTitleCase(str) {\n  return str.toLowerCase().replace(/\\b\\w/g, c => c.toUpperCase());\n}\n\nfunction slugify(label) {\n  return label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');\n}\n\nfunction isValidUrl(url) {\n  return !!url && /^https?:\\/\\//i.test(url);\n}\n\nfunction splitHeadlineSummary(block) {\n  const lines = block.split('\\n').map(l => l.trim()).filter(Boolean);\n  if (lines.length === 0) return { headline: '', summary: '' };\n  if (lines.length > 1) {\n    return { headline: lines[0], summary: lines.slice(1).join(' ') };\n  }\n  const single = lines[0];\n  const m = single.match(/^([A-Z0-9][A-Z0-9 ,'\":\\-]{4,}?)\\s+([A-Z][a-z].*)$/);\n  if (m) {\n    return { headline: m[1].trim(), summary: m[2].trim() };\n  }\n  return { headline: single, summary: '' };\n}\n\nfunction parseItems(sectionBody) {\n  const items = [];\n  const regex = /([\\s\\S]*?)Link:\\s*(\\S+)/g;\n  let match;\n  while ((match = regex.exec(sectionBody)) !== null) {\n    let block = match[1].replace(/^[\\s=\\-]+/, '').trim();\n    const link = match[2].trim();\n    if (!block) continue;\n\n    let image = null;\n    const imgMatch = block.match(/Image:\\s*(\\S+)/i);\n    if (imgMatch) {\n      image = isValidUrl(imgMatch[1]) ? imgMatch[1].trim() : null;\n      block = block.replace(/Image:\\s*\\S+/i, '').trim();\n    }\n\n    const parsed = splitHeadlineSummary(block);\n    if (!parsed.headline) continue;\n\n    items.push({\n      headline: parsed.headline,\n      summary: parsed.summary,\n      link: isValidUrl(link) ? link : null,\n      image\n    });\n  }\n  return items;\n}\n\nfunction extractCategories(fullText) {\n  const headerRegex = /^([^\\n=\\-][^\\n]*)\\n=+[ \\t]*\\r?\\n/gm;\n  const matches = [];\n  let m;\n  while ((m = headerRegex.exec(fullText)) !== null) {\n    matches.push({ label: m[1].trim(), contentStart: m.index + m[0].length, headerStart: m.index });\n  }\n  const sections = [];\n  for (let i = 0; i < matches.length; i++) {\n    const start = matches[i].contentStart;\n    const end = i + 1 < matches.length ? matches[i + 1].headerStart : fullText.length;\n    sections.push({ label: matches[i].label, body: fullText.slice(start, end).trim() });\n  }\n  return sections;\n}\n\nfunction extractOutlets(categoryBody) {\n  const headerRegex = /^([^\\n=\\-][^\\n]*)\\n-+[ \\t]*\\r?\\n/gm;\n  const matches = [];\n  let m;\n  while ((m = headerRegex.exec(categoryBody)) !== null) {\n    matches.push({ label: m[1].trim(), contentStart: m.index + m[0].length, headerStart: m.index });\n  }\n  const sections = [];\n  for (let i = 0; i < matches.length; i++) {\n    const start = matches[i].contentStart;\n    const end = i + 1 < matches.length ? matches[i + 1].headerStart : categoryBody.length;\n    sections.push({ label: matches[i].label, body: categoryBody.slice(start, end).trim() });\n  }\n  return sections;\n}\n\n// ---- Edition (category) accent system ----\n// Colour is a structural device here: India = marigold, World = ink-indigo.\n// Anything unrecognised falls back to the neutral ink accent.\nfunction editionFor(label) {\n  if (/india/i.test(label)) return { key: 'india', accent: '#C2570A', accentSoft: '#F4E3D2', name: toTitleCase(label) };\n  if (/world/i.test(label)) return { key: 'world', accent: '#1F4B5F', accentSoft: '#DCE7EA', name: toTitleCase(label) };\n  return { key: 'general', accent: '#52483B', accentSoft: '#E8E2D4', name: toTitleCase(label) };\n}\n\n// ---- Card renderers ----\nfunction renderLead(item, ed) {\n  const img = isValidUrl(item.image)\n    ? `<div class=\"lead-media\"><img src=\"${escapeHtml(item.image)}\" alt=\"\" loading=\"lazy\" onerror=\"this.parentElement.remove();\"></div>`\n    : '';\n  const inner = `\n      ${img}\n      <div class=\"lead-body\">\n        <span class=\"kicker\" style=\"color:${ed.accent}\">Top Story</span>\n        <h2 class=\"lead-headline\">${escapeHtml(item.headline)}</h2>\n        ${item.summary ? `<p class=\"lead-dek\">${escapeHtml(item.summary)}</p>` : ''}\n        <span class=\"read-link\" style=\"color:${ed.accent}\">Read full story &#8594;</span>\n      </div>`;\n  return item.link\n    ? `<a class=\"lead-story\" href=\"${escapeHtml(item.link)}\" target=\"_blank\" rel=\"noopener\">${inner}</a>`\n    : `<div class=\"lead-story no-link\">${inner}</div>`;\n}\n\nfunction renderStoryCard(item, ed) {\n  const img = isValidUrl(item.image)\n    ? `<div class=\"story-media\"><img src=\"${escapeHtml(item.image)}\" alt=\"\" loading=\"lazy\" onerror=\"this.parentElement.remove();\"></div>`\n    : '';\n  const inner = `\n      ${img}\n      <div class=\"story-body\">\n        <h3 class=\"story-headline\">${escapeHtml(item.headline)}</h3>\n        ${item.summary ? `<p class=\"story-dek\">${escapeHtml(item.summary)}</p>` : ''}\n        <span class=\"read-link\" style=\"color:${ed.accent}\">Read full story &#8594;</span>\n      </div>`;\n  return item.link\n    ? `<a class=\"story\" href=\"${escapeHtml(item.link)}\" target=\"_blank\" rel=\"noopener\">${inner}</a>`\n    : `<div class=\"story no-link\">${inner}</div>`;\n}\n\nfunction renderEventCard(item) {\n  const img = isValidUrl(item.image)\n    ? `<div class=\"event-media\"><img src=\"${escapeHtml(item.image)}\" alt=\"\" loading=\"lazy\" onerror=\"this.parentElement.remove();\"></div>`\n    : '';\n  return `\n    <div class=\"event\">\n      ${img}\n      <div class=\"event-body\">\n        <h3>${escapeHtml(item.headline)}</h3>\n        ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ''}\n        ${item.link ? `<a class=\"more\" href=\"${escapeHtml(item.link)}\" target=\"_blank\" rel=\"noopener\">Event details &#8599;</a>` : ''}\n      </div>\n    </div>`;\n}\n\n// ---- Main ----\nconst rawText = $input.first().json.text || '';\nconst today = new Date().toLocaleDateString('en-IN', {\n  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'\n});\nconst editionStamp = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }).toUpperCase();\n\nlet parsedOk = false;\nlet catButtonsHtml = '';\nlet catPanelsHtml = '';\nlet eventsHtml = '';\n\ntry {\n  const categories = extractCategories(rawText);\n\n  if (categories.length > 0) {\n    parsedOk = true;\n\n    categories.forEach((cat, idx) => {\n      const isEvents = /event/i.test(cat.label);\n\n      if (isEvents) {\n        const items = parseItems(cat.body);\n        if (items.length === 0) {\n          const emptyMsg = /no events/i.test(cat.body)\n            ? 'No events scheduled this week'\n            : 'No events found';\n          eventsHtml = `\n            <section id=\"events\" class=\"events-section\">\n              <div class=\"section-head\"><h2>${escapeHtml(toTitleCase(cat.label))}</h2></div>\n              <p class=\"empty\">${escapeHtml(emptyMsg)}</p>\n            </section>`;\n        } else {\n          eventsHtml = `\n            <section id=\"events\" class=\"events-section\">\n              <div class=\"section-head\"><h2>${escapeHtml(toTitleCase(cat.label))}</h2></div>\n              <div class=\"event-list\">${items.map(renderEventCard).join('\\n')}</div>\n            </section>`;\n        }\n        return;\n      }\n\n      // ---- Indian News / World News editions ----\n      const catId = slugify(cat.label) || `cat-${idx}`;\n      const ed = editionFor(cat.label);\n      const outlets = extractOutlets(cat.body);\n\n      // Build outlet -> items map, then peel off one lead story from the first outlet\n      const outletData = (outlets.length > 0 ? outlets : [{ label: cat.label, body: cat.body }])\n        .map(o => ({ label: o.label, items: parseItems(o.body) }))\n        .filter(o => o.items.length > 0);\n\n      let leadHtml = '';\n      if (outletData.length > 0 && outletData[0].items.length > 0) {\n        const lead = outletData[0].items.shift();\n        leadHtml = renderLead(lead, ed);\n      }\n\n      let outletNavHtml = '';\n      let outletSectionsHtml = '';\n      outletData.forEach(outlet => {\n        const outletId = `${catId}--${slugify(outlet.label)}`;\n        outletNavHtml += `<a href=\"#${outletId}\">${escapeHtml(toTitleCase(outlet.label))}</a>\\n`;\n        if (outlet.items.length === 0) return;\n        outletSectionsHtml += `\n          <section id=\"${outletId}\" class=\"outlet-section\">\n            <h3 class=\"outlet-title\" style=\"color:${ed.accent}\">${escapeHtml(toTitleCase(outlet.label))}\n              <span class=\"count\">${outlet.items.length} ${outlet.items.length === 1 ? 'story' : 'stories'}</span>\n            </h3>\n            <div class=\"story-grid\">${outlet.items.map(i => renderStoryCard(i, ed)).join('\\n')}</div>\n          </section>`;\n      });\n\n      if (!leadHtml && !outletSectionsHtml) {\n        outletSectionsHtml = `<p class=\"empty\">No stories available</p>`;\n      }\n\n      catButtonsHtml += `<button class=\"cat-btn${idx === 0 ? ' active' : ''}\" data-cat=\"${catId}\" data-accent=\"${ed.accent}\" type=\"button\">${escapeHtml(ed.name)}</button>\\n`;\n      catPanelsHtml += `\n        <div class=\"catpanel\" id=\"${catId}\" style=\"display:${idx === 0 ? 'block' : 'none'}\">\n          ${leadHtml}\n          ${outletNavHtml ? `<nav class=\"outlet-toc\">${outletNavHtml}</nav>` : ''}\n          ${outletSectionsHtml}\n        </div>`;\n    });\n  }\n} catch (e) {\n  parsedOk = false;\n}\n\nif (!parsedOk) {\n  const escaped = escapeHtml(rawText);\n  const htmlBody = escaped\n    .split(/\\n\\s*\\n/)\n    .map(p => `<p>${p.replace(/\\n/g, '<br>')}</p>`)\n    .join('\\n');\n  catPanelsHtml = `<div class=\"catpanel\" id=\"raw\" style=\"display:block\">${htmlBody}</div>`;\n  catButtonsHtml = '';\n}\n\nconst html = `<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>The Daily Dispatch</title>\n<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n<link href=\"https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600;700&display=swap\" rel=\"stylesheet\">\n<style>\n  :root{\n    --paper:#FAF7F0;\n    --paper-raised:#FFFFFF;\n    --ink:#1B1812;\n    --ink-soft:#5B5446;\n    --rule:#DEd6C2;\n    --rule-strong:#1B1812;\n    --shadow: 0 10px 30px -18px rgba(27,24,18,0.35);\n  }\n  *{ box-sizing:border-box; }\n  html{ scroll-behavior:smooth; }\n  body{\n    margin:0;\n    background:var(--paper);\n    color:var(--ink);\n    font-family:'Source Serif 4', Georgia, serif;\n    -webkit-font-smoothing:antialiased;\n  }\n  a{ color:inherit; }\n  .wrap{ max-width:980px; margin:0 auto; padding:0 22px 90px; }\n\n  /* ---------- Masthead ---------- */\n  header.masthead{\n    position:relative;\n    text-align:center;\n    padding:46px 0 22px;\n    border-bottom:4px double var(--rule-strong);\n  }\n  .stamp{\n    position:absolute; top:28px; right:0;\n    width:74px; height:74px; border-radius:50%;\n    border:2px solid var(--ink); color:var(--ink);\n    display:flex; align-items:center; justify-content:center; flex-direction:column;\n    transform:rotate(8deg);\n    font-family:'Inter',sans-serif; letter-spacing:0.05em;\n    opacity:0.78;\n  }\n  .stamp .d{ font-size:18px; font-weight:700; line-height:1; }\n  .stamp .e{ font-size:8px; font-weight:600; text-transform:uppercase; margin-top:3px; }\n  .eyebrow{\n    font-family:'Inter',sans-serif; font-size:11.5px; font-weight:600;\n    letter-spacing:0.22em; text-transform:uppercase; color:var(--ink-soft);\n    margin:0 0 10px;\n  }\n  .masthead h1{\n    font-family:'Fraunces', Georgia, serif;\n    font-weight:900;\n    font-optical-sizing:auto;\n    font-size:clamp(40px, 7vw, 64px);\n    letter-spacing:-0.01em;\n    margin:0;\n  }\n  .masthead .meta{\n    margin-top:14px;\n    font-family:'Inter',sans-serif; font-size:13px; color:var(--ink-soft);\n    letter-spacing:0.02em;\n  }\n\n  /* ---------- Edition tabs ---------- */\n  nav.maincats{ display:flex; justify-content:center; gap:8px; margin:24px 0 0; flex-wrap:wrap; }\n  .cat-btn{\n    font-family:'Inter',sans-serif; font-size:12.5px; font-weight:700;\n    letter-spacing:0.08em; text-transform:uppercase;\n    padding:9px 20px; border-radius:2px; border:1.5px solid var(--ink);\n    background:transparent; color:var(--ink); cursor:pointer;\n    transition:background .15s ease, color .15s ease, border-color .15s ease;\n  }\n  .cat-btn.active{ background:var(--ink); color:var(--paper); border-color:var(--ink); }\n  .cat-btn:hover:not(.active){ background:var(--rule); }\n\n  /* ---------- Lead story ---------- */\n  .lead-story{\n    display:block; text-decoration:none; color:inherit;\n    margin:38px 0 8px; border-bottom:1px solid var(--rule); padding-bottom:32px;\n    cursor:pointer;\n  }\n  .lead-story.no-link{ cursor:default; }\n  .lead-media{\n    width:100%; aspect-ratio:16/8; overflow:hidden; border-radius:3px;\n    background:var(--rule); margin-bottom:20px;\n  }\n  .lead-media img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s ease; }\n  .lead-story:hover .lead-media img{ transform:scale(1.035); }\n  .kicker{\n    display:block; font-family:'Inter',sans-serif; font-size:11.5px; font-weight:700;\n    letter-spacing:0.16em; text-transform:uppercase; margin-bottom:10px;\n  }\n  .lead-headline{\n    font-family:'Fraunces', Georgia, serif; font-weight:800; font-optical-sizing:auto;\n    font-size:clamp(26px, 4vw, 38px); line-height:1.12; margin:0 0 14px;\n  }\n  .lead-story:hover .lead-headline{ text-decoration:underline; text-underline-offset:5px; }\n  .lead-dek{\n    font-size:18px; line-height:1.6; color:var(--ink-soft); margin:0 0 14px; max-width:74ch;\n  }\n  .read-link{ font-family:'Inter',sans-serif; font-size:12.5px; font-weight:700; letter-spacing:0.03em; }\n\n  /* ---------- Outlet sections ---------- */\n  nav.outlet-toc{ display:flex; justify-content:center; flex-wrap:wrap; gap:18px; margin:30px 0 0; font-size:12px; }\n  nav.outlet-toc a{\n    font-family:'Inter',sans-serif; text-decoration:none; font-weight:600;\n    letter-spacing:0.05em; text-transform:uppercase; color:var(--ink-soft);\n  }\n  nav.outlet-toc a:hover{ color:var(--ink); }\n\n  .outlet-section{ margin-top:46px; }\n  .outlet-title{\n    font-family:'Inter',sans-serif; font-size:12px; font-weight:700;\n    text-transform:uppercase; letter-spacing:0.14em;\n    border-bottom:1px solid var(--rule); padding-bottom:10px; margin-bottom:6px;\n    display:flex; align-items:baseline; gap:10px;\n  }\n  .outlet-title .count{ color:var(--ink-soft); font-weight:400; letter-spacing:0; text-transform:none; font-size:11.5px; margin-left:auto; }\n\n  .story-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0 32px; }\n  .story{\n    display:block; text-decoration:none; color:inherit;\n    padding:22px 0; border-bottom:1px solid var(--rule); cursor:pointer;\n  }\n  .story.no-link{ cursor:default; }\n  .story-media{ width:100%; aspect-ratio:16/9.5; overflow:hidden; border-radius:3px; background:var(--rule); margin-bottom:13px; }\n  .story-media img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s ease; }\n  .story:hover .story-media img{ transform:scale(1.04); }\n  .story-headline{\n    font-family:'Fraunces', Georgia, serif; font-weight:700; font-optical-sizing:auto;\n    font-size:21px; line-height:1.28; margin:0 0 8px;\n  }\n  .story:hover .story-headline{ text-decoration:underline; text-underline-offset:4px; }\n  .story-dek{ font-size:14.5px; line-height:1.62; color:var(--ink-soft); margin:0 0 10px; }\n\n  /* ---------- Events ---------- */\n  .events-section{ margin-top:60px; border-top:4px double var(--rule-strong); padding-top:30px; }\n  .section-head h2{\n    font-family:'Inter',sans-serif; font-size:12.5px; font-weight:700; text-transform:uppercase;\n    letter-spacing:0.18em; margin:0 0 20px; color:var(--ink-soft);\n  }\n  .event-list{ display:flex; flex-direction:column; }\n  .event{ display:flex; gap:18px; padding:18px 0; border-bottom:1px solid var(--rule); }\n  .event:last-child{ border-bottom:none; }\n  .event-media{ width:120px; height:96px; flex-shrink:0; border-radius:3px; overflow:hidden; background:var(--rule); }\n  .event-media img{ width:100%; height:100%; object-fit:cover; display:block; }\n  .event-body{ flex:1; }\n  .event h3{ font-family:'Fraunces', serif; font-weight:700; font-size:18px; margin:0 0 6px; }\n  .event p{ font-size:14.5px; color:var(--ink-soft); margin:0 0 8px; line-height:1.55; }\n  .event a.more{ font-family:'Inter',sans-serif; font-size:12.5px; color:var(--ink); font-weight:700; text-decoration:none; }\n  .event a.more:hover{ text-decoration:underline; }\n\n  .empty{ font-style:italic; color:var(--ink-soft); font-size:14px; padding:14px 0; }\n  footer{ margin-top:64px; text-align:center; font-family:'Inter',sans-serif; font-size:11.5px; color:var(--ink-soft); letter-spacing:0.03em; }\n\n  @media (max-width:680px){\n    .story-grid{ grid-template-columns:1fr; }\n    .stamp{ width:58px; height:58px; top:14px; }\n    .stamp .d{ font-size:14px; }\n    header.masthead{ padding-top:34px; }\n  }\n</style>\n</head>\n<body>\n<div class=\"wrap\">\n  <header class=\"masthead\">\n    <div class=\"stamp\"><span class=\"d\">${editionStamp}</span><span class=\"e\">Edition</span></div>\n    <p class=\"eyebrow\">AI-curated &middot; Updated daily at 6 AM</p>\n    <h1>The Daily Dispatch</h1>\n    <div class=\"meta\">${today}</div>\n    ${catButtonsHtml ? `<nav class=\"maincats\">${catButtonsHtml}</nav>` : ''}\n  </header>\n  ${catPanelsHtml}\n  ${eventsHtml}\n  <footer>Compiled automatically from Hindustan Times &amp; India Today RSS feeds &middot; Last updated ${today}</footer>\n</div>\n<script>\n  document.querySelectorAll('.cat-btn').forEach(function (btn) {\n    btn.addEventListener('click', function () {\n      document.querySelectorAll('.cat-btn').forEach(function (b) { b.classList.remove('active'); });\n      document.querySelectorAll('.catpanel').forEach(function (p) { p.style.display = 'none'; });\n      btn.classList.add('active');\n      var panel = document.getElementById(btn.dataset.cat);\n      if (panel) panel.style.display = 'block';\n      window.scrollTo({ top: 0, behavior: 'smooth' });\n    });\n  });\n</script>\n</body>\n</html>`;\n\nconst content_base64 = Buffer.from(html, 'utf-8').toString('base64');\n\nreturn [{ json: { html, content_base64 } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        528,
+        1088
+      ],
+      "id": "e861573d-3914-4802-bff1-6818a78aba69",
+      "name": "Build HTML Page"
+    },
+    {
+      "parameters": {
+        "url": "https://api.github.com/repos/Vinaykumar1311/daily-news-brief/contents/index.html",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "ref",
+              "value": "main"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        752,
+        1088
+      ],
+      "id": "bcfaaecc-2e82-4a6e-82d6-754ccd140c24",
+      "name": "Get File SHA",
+      "credentials": {
+        "githubApi": {
+          "id": "Tvz0CBdbRAbAybuv",
+          "name": "GitHub account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const content_base64 = $('Build HTML Page').first().json.content_base64;\n\nlet sha;\ntry {\n  sha = $('Get File SHA').first().json.sha;\n} catch (e) {\n  sha = undefined;\n}\n\nconst body = {\n  message: `Update daily news brief - ${new Date().toISOString()}`,\n  content: content_base64,\n  branch: 'main'\n};\n\nif (sha) {\n  body.sha = sha;\n}\n\nreturn [{ json: { body } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        976,
+        1088
+      ],
+      "id": "49e7e9ab-a0e2-4d54-85f9-210b11b43a59",
+      "name": "Prepare GitHub Update Payload"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "https://api.github.com/repos/Vinaykumar1311/daily-news-brief/contents/index.html",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.body }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1200,
+        1088
+      ],
+      "id": "06ccdc1e-fcb7-451e-84ef-81960450a5aa",
+      "name": "Update Website File",
+      "credentials": {
+        "githubApi": {
+          "id": "Tvz0CBdbRAbAybuv",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://www.hindustantimes.com/feeds/rss/india-news/rssfeed.xml",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -496,
+        704
+      ],
+      "id": "54d5f0cb-88c1-47c0-9b5c-09826618cfc1",
+      "name": "Indian News Hindustantimes1"
+    },
+    {
+      "parameters": {
+        "url": "https://www.indiatoday.in/rss/home",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -496,
+        1088
+      ],
+      "id": "350ae8ce-e225-4dd3-b149-374b18a61cf4",
+      "name": "News indiatoday home"
+    },
+    {
+      "parameters": {
+        "url": "https://www.indiatoday.in/rss/1206514",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -496,
+        1280
+      ],
+      "id": "b1c764f2-920f-46d4-8ff2-cd52cea5e77d",
+      "name": "News Indian indiatoday"
+    },
+    {
+      "parameters": {
+        "url": "https://www.hindustantimes.com/feeds/rss/entertainment/rssfeed.xml",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -496,
+        896
+      ],
+      "id": "6a0fae6c-10d2-4e5e-9624-78f047769677",
+      "name": "Indian Entertainment Hindustantimes"
+    },
+    {
+      "parameters": {
+        "url": "https://www.indiatoday.in/rss/1206577",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -496,
+        1472
+      ],
+      "id": "f7f0aee3-5f02-422c-ab78-82f8e4eb8c01",
+      "name": "News World indiatoday1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "World News Hindustantimes",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Indian News Hindustantimes1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "News Indian indiatoday",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch Events",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "News indiatoday home",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Indian Entertainment Hindustantimes",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "News World indiatoday1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "World News Hindustantimes": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aata Aggregator": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Build HTML Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Aata Aggregator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Events": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Get File SHA": {
+      "main": [
+        [
+          {
+            "node": "Prepare GitHub Update Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare GitHub Update Payload": {
+      "main": [
+        [
+          {
+            "node": "Update Website File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build HTML Page": {
+      "main": [
+        [
+          {
+            "node": "Get File SHA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Indian News Hindustantimes1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "News indiatoday home": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "News Indian indiatoday": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Indian Entertainment Hindustantimes": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "News World indiatoday1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 6
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "5807f14a-b05b-4982-bb6e-59b2da343da1",
+  "meta": {
+    "instanceId": "303c7bf5d7d8e6b15113395609ef637c488d251e4571b9a53995bf1439508ad2"
+  },
+  "nodeGroups": [],
+  "id": "vUvNtKXxpjEOhVXv",
+  "tags": []
+}
